@@ -370,6 +370,7 @@ float* DataIO::readData(const char* fileName)
     if (fileName == "") data = ip->readStdIn();
     else data = ip->readFile(fileName);
     return data;
+
   
     /*Generator generator;
 
