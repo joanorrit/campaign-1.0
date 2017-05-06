@@ -93,8 +93,8 @@ __global__ void checkCentroid_CUDA(int N, int D, int iter, int centroid, FLOAT_T
             // compute distance in each dimension separately and build sum
             for (int d = 0; d < min(blockDim.x, D - offsetD); d++)
             {
-                dist += distanceComponentGPU(s_ctr + d - offsetD, X + (offsetD + d) * N + t);
-                //dist += distanceComponentGPU(s_ctr + d, X +  t*D + offsetD + d);
+                //dist += distanceComponentGPU(s_ctr + d - offsetD, X + (offsetD + d) * N + t);
+                dist += distanceComponentGPU(s_ctr + d, X +  t*D + offsetD + d);
             }
             offsetD += blockDim.x;
             __syncthreads();

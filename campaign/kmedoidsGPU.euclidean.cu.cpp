@@ -1,10 +1,10 @@
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.cpp"
 # 1 "/home/users/jorrit/campaign-1.0//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 1 "<command-line>" 2
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.cpp"
 # 1 "campaign/kmedoidsGPU.cu"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 # 1 "campaign/kmedoidsGPU.cu"
@@ -58429,9 +58429,9 @@ free(s);
 return score;
 # 580 "campaign/kmedoidsGPU.cu"
 }
-# 1 "tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
-# 1 "tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c" 1 3
+# 1 "tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 1 "tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c" 1 3
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wcast-qual"
@@ -59067,8 +59067,8 @@ inline float erfcxf(float a)
 
 
 #pragma pack()
-# 6 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c" 2 3
-# 1 "/tmp/tmpxft_0000551e_00000000-2_kmedoidsGPU.fatbin.c" 1 3
+# 6 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c" 2 3
+# 1 "/tmp/tmpxft_00003b57_00000000-2_kmedoidsGPU.fatbin.c" 1 3
 # 1 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 1 3
 # 33 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 3
 # 1 "/usr/local/cuda-7.5/include/fatbinary.h" 1 3
@@ -59142,7 +59142,7 @@ typedef struct {
   void *filename_or_fatbins;
 
 } __fatBinC_Wrapper_t;
-# 2 "/tmp/tmpxft_0000551e_00000000-2_kmedoidsGPU.fatbin.c" 2 3
+# 2 "/tmp/tmpxft_00003b57_00000000-2_kmedoidsGPU.fatbin.c" 2 3
 
 
 asm(
@@ -59902,14 +59902,14 @@ static const __fatBinC_Wrapper_t __fatDeviceText __attribute__ ((aligned (8))) _
  { 0x466243b1, 1, fatbinData, 0 };
 
 }
-# 7 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c" 2 3
+# 7 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c" 2 3
 static void __device_stub__Z24assignToClusters_KMDCUDAiiiPfS_Pi(int, int, int, float *, float *, int *);
 static void __device_stub__Z20calcScoreSorted_CUDAiiPfS_S_Pi(int, int, float *, float *, float *, int *);
 static void __device_stub__Z30calcNewScoreSortedAndSwap_CUDAiiPfS_S_PiS_S0_S0_S0_(int, int, float *, float *, float *, int *, float *, int *, int *, int *);
 static void __device_stub__Z24sort_getSegmentSize_CUDAiPiS_(int, int *, int *);
 static void __device_stub__Z18sort_moveData_CUDAiiPfS_PiS0_S0_S0_(int, int, float *, float *, int *, int *, int *, int *);
 static void __nv_cudaEntityRegisterCallback(void **);
-static void __sti____cudaRegisterAll_46_tmpxft_0000551e_00000000_7_kmedoidsGPU_cpp1_ii_f05831a5(void) __attribute__((__constructor__));
+static void __sti____cudaRegisterAll_46_tmpxft_00003b57_00000000_7_kmedoidsGPU_cpp1_ii_f05831a5(void) __attribute__((__constructor__));
 static void __device_stub__Z24assignToClusters_KMDCUDAiiiPfS_Pi(int __par0, int __par1, int __par2, float *__par3, float *__par4, int *__par5){if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return;{ volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, float *, float *, int *))assignToClusters_KMDCUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, float *, float *, int *))assignToClusters_KMDCUDA))); };}
 # 80 "campaign/kmedoidsGPU.cu"
 static void assignToClusters_KMDCUDA( int __cuda_0,int __cuda_1,int __cuda_2,float *__cuda_3,float *__cuda_4,int *__cuda_5)
@@ -59917,7 +59917,7 @@ static void assignToClusters_KMDCUDA( int __cuda_0,int __cuda_1,int __cuda_2,flo
 {__device_stub__Z24assignToClusters_KMDCUDAiiiPfS_Pi( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5);
 # 126 "campaign/kmedoidsGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"
 static void __device_stub__Z20calcScoreSorted_CUDAiiPfS_S_Pi( int __par0, int __par1, float *__par2, float *__par3, float *__par4, int *__par5) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, float *, float *, float *, int *))calcScoreSorted_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, float *, float *, float *, int *))calcScoreSorted_CUDA))); }; }
 # 129 "campaign/kmedoidsGPU.cu"
 static void calcScoreSorted_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float *__cuda_3,float *__cuda_4,int *__cuda_5)
@@ -59925,7 +59925,7 @@ static void calcScoreSorted_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,floa
 {__device_stub__Z20calcScoreSorted_CUDAiiPfS_S_Pi( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5);
 # 175 "campaign/kmedoidsGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"
 static void __device_stub__Z30calcNewScoreSortedAndSwap_CUDAiiPfS_S_PiS_S0_S0_S0_( int __par0, int __par1, float *__par2, float *__par3, float *__par4, int *__par5, float *__par6, int *__par7, int *__par8, int *__par9) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)40UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par7, sizeof(__par7), (size_t)48UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par8, sizeof(__par8), (size_t)56UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par9, sizeof(__par9), (size_t)64UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, float *, float *, float *, int *, float *, int *, int *, int *))calcNewScoreSortedAndSwap_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, float *, float *, float *, int *, float *, int *, int *, int *))calcNewScoreSortedAndSwap_CUDA))); }; }
 # 178 "campaign/kmedoidsGPU.cu"
 static void calcNewScoreSortedAndSwap_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float *__cuda_3,float *__cuda_4,int *__cuda_5,float *__cuda_6,int *__cuda_7,int *__cuda_8,int *__cuda_9)
@@ -59933,7 +59933,7 @@ static void calcNewScoreSortedAndSwap_CUDA( int __cuda_0,int __cuda_1,float *__c
 {__device_stub__Z30calcNewScoreSortedAndSwap_CUDAiiPfS_S_PiS_S0_S0_S0_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6,__cuda_7,__cuda_8,__cuda_9);
 # 257 "campaign/kmedoidsGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"
 static void __device_stub__Z24sort_getSegmentSize_CUDAiPiS_( int __par0, int *__par1, int *__par2) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)16UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int *, int *))sort_getSegmentSize_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int *, int *))sort_getSegmentSize_CUDA))); }; }
 # 308 "campaign/kmedoidsGPU.cu"
 static void sort_getSegmentSize_CUDA( int __cuda_0,int *__cuda_1,int *__cuda_2)
@@ -59941,7 +59941,7 @@ static void sort_getSegmentSize_CUDA( int __cuda_0,int *__cuda_1,int *__cuda_2)
 {__device_stub__Z24sort_getSegmentSize_CUDAiPiS_( __cuda_0,__cuda_1,__cuda_2);
 # 333 "campaign/kmedoidsGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"
 static void __device_stub__Z18sort_moveData_CUDAiiPfS_PiS0_S0_S0_( int __par0, int __par1, float *__par2, float *__par3, int *__par4, int *__par5, int *__par6, int *__par7) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)40UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par7, sizeof(__par7), (size_t)48UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, float *, float *, int *, int *, int *, int *))sort_moveData_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, float *, float *, int *, int *, int *, int *))sort_moveData_CUDA))); }; }
 # 337 "campaign/kmedoidsGPU.cu"
 static void sort_moveData_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float *__cuda_3,int *__cuda_4,int *__cuda_5,int *__cuda_6,int *__cuda_7)
@@ -59949,10 +59949,10 @@ static void sort_moveData_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float 
 {__device_stub__Z18sort_moveData_CUDAiiPfS_PiS0_S0_S0_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6,__cuda_7);
 # 423 "campaign/kmedoidsGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"
 static void __nv_cudaEntityRegisterCallback( void **__T211) { { volatile static void **__ref __attribute__((unused)); __ref = (volatile void **)__T211; }; __nv_save_fatbinhandle_for_managed_rt(__T211); __cudaRegisterFunction(__T211, (const char*)((void ( *)(int, int, float *, float *, int *, int *, int *, int *))sort_moveData_CUDA), (char*)"_Z18sort_moveData_CUDAiiPfS_PiS0_S0_S0_", "_Z18sort_moveData_CUDAiiPfS_PiS0_S0_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T211, (const char*)((void ( *)(int, int *, int *))sort_getSegmentSize_CUDA), (char*)"_Z24sort_getSegmentSize_CUDAiPiS_", "_Z24sort_getSegmentSize_CUDAiPiS_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T211, (const char*)((void ( *)(int, int, float *, float *, float *, int *, float *, int *, int *, int *))calcNewScoreSortedAndSwap_CUDA), (char*)"_Z30calcNewScoreSortedAndSwap_CUDAiiPfS_S_PiS_S0_S0_S0_", "_Z30calcNewScoreSortedAndSwap_CUDAiiPfS_S_PiS_S0_S0_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T211, (const char*)((void ( *)(int, int, float *, float *, float *, int *))calcScoreSorted_CUDA), (char*)"_Z20calcScoreSorted_CUDAiiPfS_S_Pi", "_Z20calcScoreSorted_CUDAiiPfS_S_Pi", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T211, (const char*)((void ( *)(int, int, int, float *, float *, int *))assignToClusters_KMDCUDA), (char*)"_Z24assignToClusters_KMDCUDAiiiPfS_Pi", "_Z24assignToClusters_KMDCUDAiiiPfS_Pi", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); }
-static void __sti____cudaRegisterAll_46_tmpxft_0000551e_00000000_7_kmedoidsGPU_cpp1_ii_f05831a5(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
+static void __sti____cudaRegisterAll_46_tmpxft_00003b57_00000000_7_kmedoidsGPU_cpp1_ii_f05831a5(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
 
 #pragma GCC diagnostic pop
-# 2 "tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c" 2
-# 1 "tmpxft_0000551e_00000000-4_kmedoidsGPU.cudafe1.stub.c"
+# 2 "tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c" 2
+# 1 "tmpxft_00003b57_00000000-4_kmedoidsGPU.cudafe1.stub.c"

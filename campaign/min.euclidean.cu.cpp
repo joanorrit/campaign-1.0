@@ -1,10 +1,10 @@
-# 1 "/tmp/tmpxft_00005579_00000000-4_min.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00003bc2_00000000-4_min.cudafe1.cpp"
 # 1 "/home/users/jorrit/campaign-1.0//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 1 "<command-line>" 2
-# 1 "/tmp/tmpxft_00005579_00000000-4_min.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00003bc2_00000000-4_min.cudafe1.cpp"
 # 1 "campaign/min.cu"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 # 1 "campaign/min.cu"
@@ -32437,9 +32437,9 @@ return (err == (cudaSuccess)) ? cudaBindSurfaceToArray(surf, array, desc) : err;
 void min(float * g_idata, int * g_idataINT, float * g_odata, int * g_odataINT, unsigned iter, unsigned N);
 # 46 "campaign/min.cu"
 void min(float *g_idata, int *g_idataINT, float *g_odata, int *g_odataINT, unsigned iter, unsigned N) ;
-# 1 "tmpxft_00005579_00000000-4_min.cudafe1.stub.c"
-# 1 "tmpxft_00005579_00000000-4_min.cudafe1.stub.c"
-# 1 "/tmp/tmpxft_00005579_00000000-4_min.cudafe1.stub.c" 1 3
+# 1 "tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c"
+# 1 "tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c" 1 3
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wcast-qual"
@@ -33075,8 +33075,8 @@ inline float erfcxf(float a)
 
 
 #pragma pack()
-# 6 "/tmp/tmpxft_00005579_00000000-4_min.cudafe1.stub.c" 2 3
-# 1 "/tmp/tmpxft_00005579_00000000-2_min.fatbin.c" 1 3
+# 6 "/tmp/tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c" 2 3
+# 1 "/tmp/tmpxft_00003bc2_00000000-2_min.fatbin.c" 1 3
 # 1 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 1 3
 # 33 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 3
 # 1 "/usr/local/cuda-7.5/include/fatbinary.h" 1 3
@@ -33150,7 +33150,7 @@ typedef struct {
   void *filename_or_fatbins;
 
 } __fatBinC_Wrapper_t;
-# 2 "/tmp/tmpxft_00005579_00000000-2_min.fatbin.c" 2 3
+# 2 "/tmp/tmpxft_00003bc2_00000000-2_min.fatbin.c" 2 3
 
 
 asm(
@@ -33282,10 +33282,10 @@ static const __fatBinC_Wrapper_t __fatDeviceText __attribute__ ((aligned (8))) _
  { 0x466243b1, 1, fatbinData, 0 };
 
 }
-# 7 "/tmp/tmpxft_00005579_00000000-4_min.cudafe1.stub.c" 2 3
+# 7 "/tmp/tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c" 2 3
 extern void __device_stub__Z3minPfPiS_S0_jj(float *, int *, float *, int *, unsigned, unsigned);
 static void __nv_cudaEntityRegisterCallback(void **);
-static void __sti____cudaRegisterAll_38_tmpxft_00005579_00000000_7_min_cpp1_ii_fb312272(void) __attribute__((__constructor__));
+static void __sti____cudaRegisterAll_38_tmpxft_00003bc2_00000000_7_min_cpp1_ii_fb312272(void) __attribute__((__constructor__));
 void __device_stub__Z3minPfPiS_S0_jj(float *__par0, int *__par1, float *__par2, int *__par3, unsigned __par4, unsigned __par5){if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)8UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)16UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)24UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)32UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)36UL) != cudaSuccess) return;{ volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(float *, int *, float *, int *, unsigned, unsigned))min)); (void)cudaLaunch(((char *)((void ( *)(float *, int *, float *, int *, unsigned, unsigned))min))); };}
 # 46 "campaign/min.cu"
 void min( float *__cuda_0,int *__cuda_1,float *__cuda_2,int *__cuda_3,unsigned __cuda_4,unsigned __cuda_5)
@@ -33293,10 +33293,10 @@ void min( float *__cuda_0,int *__cuda_1,float *__cuda_2,int *__cuda_3,unsigned _
 {__device_stub__Z3minPfPiS_S0_jj( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5);
 # 106 "campaign/min.cu"
 }
-# 1 "/tmp/tmpxft_00005579_00000000-4_min.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c"
 static void __nv_cudaEntityRegisterCallback( void **__T20) { { volatile static void **__ref __attribute__((unused)); __ref = (volatile void **)__T20; }; __nv_save_fatbinhandle_for_managed_rt(__T20); __cudaRegisterFunction(__T20, (const char*)((void ( *)(float *, int *, float *, int *, unsigned, unsigned))min), (char*)"_Z3minPfPiS_S0_jj", "_Z3minPfPiS_S0_jj", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); }
-static void __sti____cudaRegisterAll_38_tmpxft_00005579_00000000_7_min_cpp1_ii_fb312272(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
+static void __sti____cudaRegisterAll_38_tmpxft_00003bc2_00000000_7_min_cpp1_ii_fb312272(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
 
 #pragma GCC diagnostic pop
-# 2 "tmpxft_00005579_00000000-4_min.cudafe1.stub.c" 2
-# 1 "tmpxft_00005579_00000000-4_min.cudafe1.stub.c"
+# 2 "tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c" 2
+# 1 "tmpxft_00003bc2_00000000-4_min.cudafe1.stub.c"
