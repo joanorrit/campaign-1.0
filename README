@@ -1,0 +1,115 @@
+ * --------------------------------------------------------------------------- *
+ *                                  CAMPAIGN                                   *
+ * --------------------------------------------------------------------------- *
+ * This is part of the CAMPAIGN data clustering library originating from       *
+ * Simbios, the NIH National Center for Physics-Based Simulation of Biological *
+ * Structures at Stanford, funded under the NIH Roadmap for Medical Research,  *
+ * grant U54 GM072970 (See https://simtk.org), and the FEATURE Project at      *
+ * Stanford, funded under the NIH grant LM05652                                *
+ * (See http://feature.stanford.edu/index.php).                                *
+ *                                                                             *
+ * Portions copyright (c) 2010 Stanford University and the Authors.            *
+ * Authors: Marc Sosnick                                                       *
+ * Contributors: Kai J. Kolhoff, William Hsu                                   *
+ *                                                                             *
+ * This program is free software: you can redistribute it and/or modify it     *
+ * under the terms of the GNU Lesser General Public License as published by    *
+ * the Free Software Foundation, either version 3 of the License, or (at your  *
+ * option) any later version.                                                  *
+ *                                                                             *
+ * This program is distributed in the hope that it will be useful, but WITHOUT *
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or       *
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public        *
+ * License for more details.                                                   *
+ *                                                                             *
+ * You should have received a copy of the GNU Lesser General Public License    *
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.       *
+ * --------------------------------------------------------------------------- *
+
+$Id: README 159 2011-01-13 22:54:23Z msosnick $
+
+--------------------------------------------------------------------------------
+                 CAMPAIGN CUDA-Optimized Data Clustering Library
+--------------------------------------------------------------------------------
+
+INTRODUCTION:
+  This package compiles and installs a set of libraries for data 
+  clustering, optimized for general-purpose graphics processing 
+  units (GPUs).
+
+  This package implements a number of different data clustering algorithms 
+  (e.g. k-means, k-centers), and a number of distance metrics.  For optimal
+  speedup these distance metrics are currently inlined, so for each 
+  distance metric there is a separate library file.  
+
+
+CONFIGURATION:
+  Currently this package supports compilation on Mac platforms and Linux 
+  platforms with the NVIDIA CUDA Toolkit installed.  configure will do 
+  its best to determine what system type you are working on, and where 
+  things are located.  There are three important locations the package 
+  needs to know:
+    * Installed CUDA developer libraries (e.g. /usr/local/cuda/lib)
+    * Installed CUDA developer include files(e.g. /usr/local/cuda/lib)
+    * CUDA Toolkit package installation location (e.g. 
+        /Developer/GPU\ Computing/)
+
+  To determine these locations, two things need to be known:  the CUDA 
+  developer's library location installed with the CUDA Toolkit, and the 
+  CUDA Toolkit package location.  If you have a nonstandard installation 
+  or configure is unable to determine these locations, there are 
+  configure switches that specify these locations:
+
+                    Package specific ./configure options
+
+  --with-cuda-dev=dev_pathname
+    where lib_pathname specifies the location of the CUDA Developer 
+    Toolkit installation.  On a Mac, the default location for this is 
+    /Developer/GPU\ Computing.  So, to install to another location, the 
+    command line might look like:
+      ./configure --with-cuda-dev=/Developer/nonstandard/location.
+
+  --with-cuda-lib=lib_pathname
+    where lib_pathname is the location of the libraries installed with 
+    the CUDA Developer Toolkit.  This path is also used to locate the 
+    include files for these libraries, which must be located at 
+    ../include, relative to lib_pathname.  On a Mac, the default location
+    for this is /usr/local/cuda/lib.  So to install to another location, 
+    the command line might look like:
+      ./configure --with-cuda-lib=/usr/local/nonstandard/location/cuda/lib.  
+
+  --with-cuda-dylib=dylib_pathname
+    This is currently not implemented.
+
+  All of the above switches override the locations automatically 
+  determined by configure.
+
+
+EXAMPLE FILES:
+  The example files are located in the ./examples directory.  To make 
+  these examples, change directories to examples, and type make. The 
+  default distance metric used is Euclidean squared.  You may change 
+  distance metrics by setting two variables: CAMPAIGN_METRIC_LIB and 
+  CAMPAIGN_METRIC_NAME.  These variables must be set in the 
+  following pairs:
+
+    Chebyshev
+      CAMPAIGN_METRIC_LIB=chebyshev 
+      CAMPAIGN_METRIC_NAME=CAMPAIGN_DISTANCE_CHEBYSHEV
+
+    Euclidean
+      CAMPAIGN_METRIC_LIB=euclidean 
+      CAMPAIGN_METRIC_NAME=CAMPAIGN_DISTANCE_EUCLIDEAN
+
+    Euclidean Squared (default)
+      CAMPAIGN_METRIC_LIB=euclideansquared
+      CAMPAIGN_DISTANCE_EUCLIDEAN_SQUARED
+
+    Manhattan
+      CAMPAIGN_METRIC_LIB=manhattan 
+      CAMPAIGN_METRIC_NAME=CAMPAIGN_DISTANCE_MANHATTAN
+
+  So, to compile the examples with the manhattan distance
+  metric, the command line would be:
+    make CAMPAIGN_METRIC_LIB=manhattan \
+      CAMPAIGN_METRIC_NAME=CAMPAIGN_DISTANCE_MANHATTAN

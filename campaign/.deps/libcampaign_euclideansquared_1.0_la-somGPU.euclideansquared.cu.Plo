@@ -1,0 +1,4 @@
+campaign/libcampaign_euclideansquared_1.0_la-somGPU.euclideansquared.cu.lo: \
+ campaign/somGPU.euclideansquared.cu.cpp /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:

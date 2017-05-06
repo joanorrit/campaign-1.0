@@ -1,0 +1,11 @@
+prefix=/home/users/jorrit/campaign-1.0//install
+exec_prefix=/home/users/jorrit/campaign-1.0//install
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: campaign
+Description: CAMPAIGN Clustering Library
+Version: 1.0
+URL: @PACKAGE_URL@
+Libs: -L${libdir} -lcampaign-1.0
+Cflags: -I${includedir}/campaign-1.0 -I${libdir}/campaign-1.0/include

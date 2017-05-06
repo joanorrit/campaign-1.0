@@ -1,0 +1,4 @@
+campaign/libcampaign_euclidean_1.0_la-kcentersGPU.euclidean.cu.lo: \
+ campaign/kcentersGPU.euclidean.cu.cpp /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:
