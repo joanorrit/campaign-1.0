@@ -127,5 +127,4 @@ float * Generator::getIntercalatePoints()
 float * Generator::getContiguousPoints()
 {
 	return this->pointsContiguous;
-	//prova pel commit
 }
