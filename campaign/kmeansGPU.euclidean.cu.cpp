@@ -1,10 +1,10 @@
-# 1 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.cpp"
 # 1 "/home/users/jorrit/campaign-1.0//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 1 "<command-line>" 2
-# 1 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.cpp"
 # 1 "campaign/kmeansGPU.cu"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 # 1 "campaign/kmeansGPU.cu"
@@ -58315,9 +58315,9 @@ free(s);
 return score;
 # 306 "campaign/kmeansGPU.cu"
 }
-# 1 "tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c"
-# 1 "tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c"
-# 1 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c" 1 3
+# 1 "tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c"
+# 1 "tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c" 1 3
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wcast-qual"
@@ -58953,8 +58953,8 @@ inline float erfcxf(float a)
 
 
 #pragma pack()
-# 6 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c" 2 3
-# 1 "/tmp/tmpxft_00003b4d_00000000-2_kmeansGPU.fatbin.c" 1 3
+# 6 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c" 2 3
+# 1 "/tmp/tmpxft_00005517_00000000-2_kmeansGPU.fatbin.c" 1 3
 # 1 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 1 3
 # 33 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 3
 # 1 "/usr/local/cuda-7.5/include/fatbinary.h" 1 3
@@ -59028,7 +59028,7 @@ typedef struct {
   void *filename_or_fatbins;
 
 } __fatBinC_Wrapper_t;
-# 2 "/tmp/tmpxft_00003b4d_00000000-2_kmeansGPU.fatbin.c" 2 3
+# 2 "/tmp/tmpxft_00005517_00000000-2_kmeansGPU.fatbin.c" 2 3
 
 
 asm(
@@ -59493,12 +59493,12 @@ static const __fatBinC_Wrapper_t __fatDeviceText __attribute__ ((aligned (8))) _
  { 0x466243b1, 1, fatbinData, 0 };
 
 }
-# 7 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c" 2 3
+# 7 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c" 2 3
 static void __device_stub__Z23assignToClusters_KMCUDAiiiPfS_Pi(int, int, int, float *, float *, int *);
 static void __device_stub__Z14calcScore_CUDAiiPfS_PiS_(int, int, float *, float *, int *, float *);
 static void __device_stub__Z18calcCentroids_CUDAiiPfS_Pi(int, int, float *, float *, int *);
 static void __nv_cudaEntityRegisterCallback(void **);
-static void __sti____cudaRegisterAll_44_tmpxft_00003b4d_00000000_7_kmeansGPU_cpp1_ii_4d292664(void) __attribute__((__constructor__));
+static void __sti____cudaRegisterAll_44_tmpxft_00005517_00000000_7_kmeansGPU_cpp1_ii_4d292664(void) __attribute__((__constructor__));
 static void __device_stub__Z23assignToClusters_KMCUDAiiiPfS_Pi(int __par0, int __par1, int __par2, float *__par3, float *__par4, int *__par5){if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return;{ volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, float *, float *, int *))assignToClusters_KMCUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, float *, float *, int *))assignToClusters_KMCUDA))); };}
 # 89 "campaign/kmeansGPU.cu"
 static void assignToClusters_KMCUDA( int __cuda_0,int __cuda_1,int __cuda_2,float *__cuda_3,float *__cuda_4,int *__cuda_5)
@@ -59506,7 +59506,7 @@ static void assignToClusters_KMCUDA( int __cuda_0,int __cuda_1,int __cuda_2,floa
 {__device_stub__Z23assignToClusters_KMCUDAiiiPfS_Pi( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5);
 # 135 "campaign/kmeansGPU.cu"
 }
-# 1 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c"
 static void __device_stub__Z14calcScore_CUDAiiPfS_PiS_( int __par0, int __par1, float *__par2, float *__par3, int *__par4, float *__par5) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, float *, float *, int *, float *))calcScore_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, float *, float *, int *, float *))calcScore_CUDA))); }; }
 # 138 "campaign/kmeansGPU.cu"
 static void calcScore_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float *__cuda_3,int *__cuda_4,float *__cuda_5)
@@ -59514,7 +59514,7 @@ static void calcScore_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float *__c
 {__device_stub__Z14calcScore_CUDAiiPfS_PiS_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5);
 # 182 "campaign/kmeansGPU.cu"
 }
-# 1 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c"
 static void __device_stub__Z18calcCentroids_CUDAiiPfS_Pi( int __par0, int __par1, float *__par2, float *__par3, int *__par4) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, float *, float *, int *))calcCentroids_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, float *, float *, int *))calcCentroids_CUDA))); }; }
 # 186 "campaign/kmeansGPU.cu"
 static void calcCentroids_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float *__cuda_3,int *__cuda_4)
@@ -59522,10 +59522,10 @@ static void calcCentroids_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,float 
 {__device_stub__Z18calcCentroids_CUDAiiPfS_Pi( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4);
 # 239 "campaign/kmeansGPU.cu"
 }
-# 1 "/tmp/tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c"
 static void __nv_cudaEntityRegisterCallback( void **__T29) { { volatile static void **__ref __attribute__((unused)); __ref = (volatile void **)__T29; }; __nv_save_fatbinhandle_for_managed_rt(__T29); __cudaRegisterFunction(__T29, (const char*)((void ( *)(int, int, float *, float *, int *))calcCentroids_CUDA), (char*)"_Z18calcCentroids_CUDAiiPfS_Pi", "_Z18calcCentroids_CUDAiiPfS_Pi", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T29, (const char*)((void ( *)(int, int, float *, float *, int *, float *))calcScore_CUDA), (char*)"_Z14calcScore_CUDAiiPfS_PiS_", "_Z14calcScore_CUDAiiPfS_PiS_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T29, (const char*)((void ( *)(int, int, int, float *, float *, int *))assignToClusters_KMCUDA), (char*)"_Z23assignToClusters_KMCUDAiiiPfS_Pi", "_Z23assignToClusters_KMCUDAiiiPfS_Pi", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); }
-static void __sti____cudaRegisterAll_44_tmpxft_00003b4d_00000000_7_kmeansGPU_cpp1_ii_4d292664(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
+static void __sti____cudaRegisterAll_44_tmpxft_00005517_00000000_7_kmeansGPU_cpp1_ii_4d292664(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
 
 #pragma GCC diagnostic pop
-# 2 "tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c" 2
-# 1 "tmpxft_00003b4d_00000000-4_kmeansGPU.cudafe1.stub.c"
+# 2 "tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c" 2
+# 1 "tmpxft_00005517_00000000-4_kmeansGPU.cudafe1.stub.c"

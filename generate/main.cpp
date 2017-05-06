@@ -35,4 +35,5 @@ int main(int argc, char *argv[])
 	generator.generateClustersContiguous();
 	
 	generator.printPoints();
-} 
+}
+

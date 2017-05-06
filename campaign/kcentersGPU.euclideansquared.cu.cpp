@@ -1,10 +1,10 @@
-# 1 "/tmp/tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.cpp"
 # 1 "/home/users/jorrit/campaign-1.0//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 1 "<command-line>" 2
-# 1 "/tmp/tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.cpp"
 # 1 "campaign/kcentersGPU.cu"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 # 1 "campaign/kcentersGPU.cu"
@@ -58293,9 +58293,9 @@ free(maxID);
 free(ctr);
 # 189 "campaign/kcentersGPU.cu"
 }
-# 1 "tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c"
-# 1 "tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c"
-# 1 "/tmp/tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c" 1 3
+# 1 "tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 1 "tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c" 1 3
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wcast-qual"
@@ -58931,8 +58931,8 @@ inline float erfcxf(float a)
 
 
 #pragma pack()
-# 6 "/tmp/tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
-# 1 "/tmp/tmpxft_000038d6_00000000-2_kcentersGPU.fatbin.c" 1 3
+# 6 "/tmp/tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
+# 1 "/tmp/tmpxft_0000531d_00000000-2_kcentersGPU.fatbin.c" 1 3
 # 1 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 1 3
 # 33 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 3
 # 1 "/usr/local/cuda-7.5/include/fatbinary.h" 1 3
@@ -59006,7 +59006,7 @@ typedef struct {
   void *filename_or_fatbins;
 
 } __fatBinC_Wrapper_t;
-# 2 "/tmp/tmpxft_000038d6_00000000-2_kcentersGPU.fatbin.c" 2 3
+# 2 "/tmp/tmpxft_0000531d_00000000-2_kcentersGPU.fatbin.c" 2 3
 
 
 asm(
@@ -59197,10 +59197,10 @@ static const __fatBinC_Wrapper_t __fatDeviceText __attribute__ ((aligned (8))) _
  { 0x466243b1, 1, fatbinData, 0 };
 
 }
-# 7 "/tmp/tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
+# 7 "/tmp/tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
 extern void __device_stub__Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_(int, int, int, int, float *, float *, float *, int *, float *, int *);
 static void __nv_cudaEntityRegisterCallback(void **);
-static void __sti____cudaRegisterAll_46_tmpxft_000038d6_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) __attribute__((__constructor__));
+static void __sti____cudaRegisterAll_46_tmpxft_0000531d_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) __attribute__((__constructor__));
 void __device_stub__Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_(int __par0, int __par1, int __par2, int __par3, float *__par4, float *__par5, float *__par6, int *__par7, float *__par8, int *__par9){if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)12UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)16UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)24UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)32UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par7, sizeof(__par7), (size_t)40UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par8, sizeof(__par8), (size_t)48UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par9, sizeof(__par9), (size_t)56UL) != cudaSuccess) return;{ volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, int, float *, float *, float *, int *, float *, int *))checkCentroid_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, int, float *, float *, float *, int *, float *, int *))checkCentroid_CUDA))); };}
 # 70 "campaign/kcentersGPU.cu"
 void checkCentroid_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_3,float *__cuda_4,float *__cuda_5,float *__cuda_6,int *__cuda_7,float *__cuda_8,int *__cuda_9)
@@ -59208,10 +59208,10 @@ void checkCentroid_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_3,flo
 {__device_stub__Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6,__cuda_7,__cuda_8,__cuda_9);
 # 121 "campaign/kcentersGPU.cu"
 }
-# 1 "/tmp/tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c"
 static void __nv_cudaEntityRegisterCallback( void **__T24) { { volatile static void **__ref __attribute__((unused)); __ref = (volatile void **)__T24; }; __nv_save_fatbinhandle_for_managed_rt(__T24); __cudaRegisterFunction(__T24, (const char*)((void ( *)(int, int, int, int, float *, float *, float *, int *, float *, int *))checkCentroid_CUDA), (char*)"_Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_", "_Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); }
-static void __sti____cudaRegisterAll_46_tmpxft_000038d6_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
+static void __sti____cudaRegisterAll_46_tmpxft_0000531d_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
 
 #pragma GCC diagnostic pop
-# 2 "tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c" 2
-# 1 "tmpxft_000038d6_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 2 "tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c" 2
+# 1 "tmpxft_0000531d_00000000-4_kcentersGPU.cudafe1.stub.c"
