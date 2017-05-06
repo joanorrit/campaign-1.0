@@ -1,10 +1,10 @@
-# 1 "/tmp/tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.cpp"
 # 1 "/home/users/jorrit/campaign-1.0//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 1 "<command-line>" 2
-# 1 "/tmp/tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.cpp"
 # 1 "campaign/kcentersGPU.cu"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 # 1 "campaign/kcentersGPU.cu"
@@ -58211,95 +58211,95 @@ parallelMax(int tid, T *s_A, U *s_B)
 ::exit(___);}
 # 70 "campaign/kcentersGPU.cu"
 void checkCentroid_CUDA(int N, int D, int iter, int centroid, float *X, float *CTR, float *DIST, int *ASSIGN, float *MAXDIST, int *MAXID) ;
-# 124 "campaign/kcentersGPU.cu"
-void kcentersGPU(int N, int K, int D, float *x, int *assign, float *dist, int *centroids, int seed, DataIO *data)
 # 125 "campaign/kcentersGPU.cu"
+void kcentersGPU(int N, int K, int D, float *x, int *assign, float *dist, int *centroids, int seed, DataIO *data)
+# 126 "campaign/kcentersGPU.cu"
 {
-# 127 "campaign/kcentersGPU.cu"
-int numBlock = (int)ceil(((float)N) / ((float)256));
 # 128 "campaign/kcentersGPU.cu"
-dim3 block(256);
+int numBlock = (int)ceil(((float)N) / ((float)256));
 # 129 "campaign/kcentersGPU.cu"
-dim3 grid(numBlock);
+dim3 block(256);
 # 130 "campaign/kcentersGPU.cu"
+dim3 grid(numBlock);
+# 131 "campaign/kcentersGPU.cu"
 int sMem = ((((2) * sizeof(float)) + sizeof(int)) * (256));
-# 135 "campaign/kcentersGPU.cu"
-float *dist_d = data->allocDeviceMemory< float *> (sizeof(float) * N, dist);
 # 136 "campaign/kcentersGPU.cu"
-int *assign_d = data->allocDeviceMemory< int *> (sizeof(int) * N);
+float *dist_d = data->allocDeviceMemory< float *> (sizeof(float) * N, dist);
 # 137 "campaign/kcentersGPU.cu"
-float *x_d = data->allocDeviceMemory< float *> ((sizeof(float) * N) * D, x);
+int *assign_d = data->allocDeviceMemory< int *> (sizeof(int) * N);
 # 138 "campaign/kcentersGPU.cu"
-float *ctr_d = data->allocDeviceMemory< float *> (sizeof(float) * D);
+float *x_d = data->allocDeviceMemory< float *> ((sizeof(float) * N) * D, x);
 # 139 "campaign/kcentersGPU.cu"
-float *maxDistBlock_d = data->allocDeviceMemory< float *> (sizeof(float) * numBlock);
+float *ctr_d = data->allocDeviceMemory< float *> (sizeof(float) * D);
 # 140 "campaign/kcentersGPU.cu"
+float *maxDistBlock_d = data->allocDeviceMemory< float *> (sizeof(float) * numBlock);
+# 141 "campaign/kcentersGPU.cu"
 int *maxIdBlock_d = data->allocDeviceMemory< int *> (sizeof(int) * numBlock);
-# 143 "campaign/kcentersGPU.cu"
-float *maxDistBlock = (float *)malloc(sizeof(float) * numBlock);
 # 144 "campaign/kcentersGPU.cu"
-int *maxID = (int *)malloc(sizeof(int));
+float *maxDistBlock = (float *)malloc(sizeof(float) * numBlock);
 # 145 "campaign/kcentersGPU.cu"
+int *maxID = (int *)malloc(sizeof(int));
+# 146 "campaign/kcentersGPU.cu"
 float *ctr = (float *)malloc(sizeof(float) * D);
-# 147 "campaign/kcentersGPU.cu"
+# 148 "campaign/kcentersGPU.cu"
 int centroid = seed;
-# 149 "campaign/kcentersGPU.cu"
-for (int k = 0; k < K; ++k)
 # 150 "campaign/kcentersGPU.cu"
+for (int k = 0; k < K; ++k)
+# 151 "campaign/kcentersGPU.cu"
 {
-# 152 "campaign/kcentersGPU.cu"
-for (int d = 0; d < D; d++) { (ctr[d]) = (x[(d * N) + centroid]); }
 # 153 "campaign/kcentersGPU.cu"
-cudaMemcpy(ctr_d, ctr, sizeof(float) * D, cudaMemcpyHostToDevice);
+for (int d = 0; d < D; d++) { (ctr[d]) = (x[(d * N) + centroid]); }
 # 154 "campaign/kcentersGPU.cu"
+cudaMemcpy(ctr_d, ctr, sizeof(float) * D, cudaMemcpyHostToDevice);
+# 155 "campaign/kcentersGPU.cu"
 (centroids[k]) = centroid;
-# 158 "campaign/kcentersGPU.cu"
+# 159 "campaign/kcentersGPU.cu"
 (cudaConfigureCall(grid, block, sMem)) ? (void)0 : (checkCentroid_CUDA)(N, D, k, centroid, x_d, ctr_d, dist_d, assign_d, maxDistBlock_d, maxIdBlock_d);
-# 160 "campaign/kcentersGPU.cu"
+# 161 "campaign/kcentersGPU.cu"
 ;
-# 163 "campaign/kcentersGPU.cu"
-cudaMemcpy(maxDistBlock, maxDistBlock_d, sizeof(float) * numBlock, cudaMemcpyDeviceToHost);
 # 164 "campaign/kcentersGPU.cu"
-int tempMax = 0;
+cudaMemcpy(maxDistBlock, maxDistBlock_d, sizeof(float) * numBlock, cudaMemcpyDeviceToHost);
 # 165 "campaign/kcentersGPU.cu"
-for (int i = 1; i < numBlock; i++)
+int tempMax = 0;
 # 166 "campaign/kcentersGPU.cu"
-{
+for (int i = 1; i < numBlock; i++)
 # 167 "campaign/kcentersGPU.cu"
-if ((maxDistBlock[i]) > (maxDistBlock[tempMax])) { tempMax = i; }
+{
 # 168 "campaign/kcentersGPU.cu"
-}
+if ((maxDistBlock[i]) > (maxDistBlock[tempMax])) { tempMax = i; }
 # 169 "campaign/kcentersGPU.cu"
-cudaMemcpy(maxID, maxIdBlock_d + tempMax, sizeof(int), cudaMemcpyDeviceToHost);
+}
 # 170 "campaign/kcentersGPU.cu"
-centroid = (maxID[0]);
+cudaMemcpy(maxID, maxIdBlock_d + tempMax, sizeof(int), cudaMemcpyDeviceToHost);
 # 171 "campaign/kcentersGPU.cu"
+centroid = (maxID[0]);
+# 172 "campaign/kcentersGPU.cu"
 }
-# 173 "campaign/kcentersGPU.cu"
+# 174 "campaign/kcentersGPU.cu"
 cudaMemcpy(assign, assign_d, sizeof(int) * N, cudaMemcpyDeviceToHost);
-# 176 "campaign/kcentersGPU.cu"
-cudaFree(dist_d);
 # 177 "campaign/kcentersGPU.cu"
-cudaFree(assign_d);
+cudaFree(dist_d);
 # 178 "campaign/kcentersGPU.cu"
-cudaFree(x_d);
+cudaFree(assign_d);
 # 179 "campaign/kcentersGPU.cu"
-cudaFree(ctr_d);
+cudaFree(x_d);
 # 180 "campaign/kcentersGPU.cu"
-cudaFree(maxDistBlock_d);
+cudaFree(ctr_d);
 # 181 "campaign/kcentersGPU.cu"
-cudaFree(maxIdBlock_d);
+cudaFree(maxDistBlock_d);
 # 182 "campaign/kcentersGPU.cu"
-free(maxDistBlock);
+cudaFree(maxIdBlock_d);
 # 183 "campaign/kcentersGPU.cu"
-free(maxID);
+free(maxDistBlock);
 # 184 "campaign/kcentersGPU.cu"
+free(maxID);
+# 185 "campaign/kcentersGPU.cu"
 free(ctr);
-# 188 "campaign/kcentersGPU.cu"
+# 189 "campaign/kcentersGPU.cu"
 }
-# 1 "tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c"
-# 1 "tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c"
-# 1 "/tmp/tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c" 1 3
+# 1 "tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 1 "tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c" 1 3
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wcast-qual"
@@ -58935,8 +58935,8 @@ inline float erfcxf(float a)
 
 
 #pragma pack()
-# 6 "/tmp/tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
-# 1 "/tmp/tmpxft_00002e70_00000000-2_kcentersGPU.fatbin.c" 1 3
+# 6 "/tmp/tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
+# 1 "/tmp/tmpxft_000054ee_00000000-2_kcentersGPU.fatbin.c" 1 3
 # 1 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 1 3
 # 33 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 3
 # 1 "/usr/local/cuda-7.5/include/fatbinary.h" 1 3
@@ -59010,7 +59010,7 @@ typedef struct {
   void *filename_or_fatbins;
 
 } __fatBinC_Wrapper_t;
-# 2 "/tmp/tmpxft_00002e70_00000000-2_kcentersGPU.fatbin.c" 2 3
+# 2 "/tmp/tmpxft_000054ee_00000000-2_kcentersGPU.fatbin.c" 2 3
 
 
 asm(
@@ -59232,21 +59232,21 @@ static const __fatBinC_Wrapper_t __fatDeviceText __attribute__ ((aligned (8))) _
  { 0x466243b1, 1, fatbinData, 0 };
 
 }
-# 7 "/tmp/tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
+# 7 "/tmp/tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c" 2 3
 extern void __device_stub__Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_(int, int, int, int, float *, float *, float *, int *, float *, int *);
 static void __nv_cudaEntityRegisterCallback(void **);
-static void __sti____cudaRegisterAll_46_tmpxft_00002e70_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) __attribute__((__constructor__));
+static void __sti____cudaRegisterAll_46_tmpxft_000054ee_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) __attribute__((__constructor__));
 void __device_stub__Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_(int __par0, int __par1, int __par2, int __par3, float *__par4, float *__par5, float *__par6, int *__par7, float *__par8, int *__par9){if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)12UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)16UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)24UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)32UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par7, sizeof(__par7), (size_t)40UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par8, sizeof(__par8), (size_t)48UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par9, sizeof(__par9), (size_t)56UL) != cudaSuccess) return;{ volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, int, float *, float *, float *, int *, float *, int *))checkCentroid_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, int, float *, float *, float *, int *, float *, int *))checkCentroid_CUDA))); };}
 # 70 "campaign/kcentersGPU.cu"
 void checkCentroid_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_3,float *__cuda_4,float *__cuda_5,float *__cuda_6,int *__cuda_7,float *__cuda_8,int *__cuda_9)
 # 71 "campaign/kcentersGPU.cu"
 {__device_stub__Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6,__cuda_7,__cuda_8,__cuda_9);
-# 120 "campaign/kcentersGPU.cu"
+# 121 "campaign/kcentersGPU.cu"
 }
-# 1 "/tmp/tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c"
 static void __nv_cudaEntityRegisterCallback( void **__T24) { { volatile static void **__ref __attribute__((unused)); __ref = (volatile void **)__T24; }; __nv_save_fatbinhandle_for_managed_rt(__T24); __cudaRegisterFunction(__T24, (const char*)((void ( *)(int, int, int, int, float *, float *, float *, int *, float *, int *))checkCentroid_CUDA), (char*)"_Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_", "_Z18checkCentroid_CUDAiiiiPfS_S_PiS_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); }
-static void __sti____cudaRegisterAll_46_tmpxft_00002e70_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
+static void __sti____cudaRegisterAll_46_tmpxft_000054ee_00000000_7_kcentersGPU_cpp1_ii_1383e873(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
 
 #pragma GCC diagnostic pop
-# 2 "tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c" 2
-# 1 "tmpxft_00002e70_00000000-4_kcentersGPU.cudafe1.stub.c"
+# 2 "tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c" 2
+# 1 "tmpxft_000054ee_00000000-4_kcentersGPU.cudafe1.stub.c"

@@ -35,9 +35,16 @@ void Generator::usageLessPointsThanClusters()
  */
 void Generator::printPoints() 
 {	
-	for (int i = 0; i < this->totalPoints; i++)
-	{
-		cout << this->points[i] << endl;
+	if (this->accessContiguousActivated) {
+		for (int i = 0; i < this->totalPoints; i++)
+		{	
+			cout << this->pointsContiguous[i] << endl;
+		}
+	} else {
+		for (int i = 0; i < this->totalPoints; i++)
+		{		
+			cout << this->points[i] << endl;
+		}
 	}
 }
 
@@ -110,6 +117,10 @@ void Generator::setD(int D)
 	this->D = D;
 }
 
+/**
+ * Mallocs all memory necessary for
+ * generating the sets of points.
+ */
 void Generator::mallocMemoryForPoints() 
 {
 	this->totalPointsPerCluster = this->N / this->K;
@@ -119,12 +130,43 @@ void Generator::mallocMemoryForPoints()
 	this->pointsContiguous = (float *) malloc(this->totalPoints * sizeof(float));
 }
 
+/**
+ * Gets the set of point in an intercalated structure
+ */
 float * Generator::getIntercalatePoints()
 {
 	return this->points;
 }
 
+/**
+ * Gets the set of point in an contiguous structure
+ */
 float * Generator::getContiguousPoints()
 {
 	return this->pointsContiguous;
+}
+
+int Generator::getN()
+{
+	return this->N;
+}
+
+int Generator::getK()
+{
+	return this->K;
+}
+
+int Generator::getD()
+{
+	return this->D;
+}
+
+bool Generator::contiguousAccessIsActivated()
+{
+	return this->accessContiguousActivated;
+}
+
+void Generator::activateContiguousAccess()
+{
+	this->accessContiguousActivated = true;
 }

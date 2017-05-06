@@ -366,11 +366,12 @@ DataIO::~DataIO()
  */
 float* DataIO::readData(const char* fileName)
 {  
-    /*float* data;
+    float* data;
     if (fileName == "") data = ip->readStdIn();
-    else data = ip->readFile(fileName);*/
+    else data = ip->readFile(fileName);
+    return data;
   
-    Generator generator;
+    /*Generator generator;
 
     generator.setN(1000000);
     generator.setK(10);
@@ -386,7 +387,7 @@ float* DataIO::readData(const char* fileName)
 	
     //generator.printPoints();
 
-    return generator.getContiguousPoints();
+    return generator.getContiguousPoints();*/
 }
 
 /**

@@ -1,10 +1,10 @@
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.cpp"
 # 1 "/home/users/jorrit/campaign-1.0//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 1 "<command-line>" 2
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.cpp"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.cpp"
 # 1 "campaign/hierarchicalGPU.cu"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 # 1 "campaign/hierarchicalGPU.cu"
@@ -58451,9 +58451,9 @@ free(closestClust);
 return seq;
 # 539 "campaign/hierarchicalGPU.cu"
 }
-# 1 "tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
-# 1 "tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c" 1 3
+# 1 "tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c" 1 3
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wcast-qual"
@@ -59089,8 +59089,8 @@ inline float erfcxf(float a)
 
 
 #pragma pack()
-# 6 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c" 2 3
-# 1 "/tmp/tmpxft_0000304f_00000000-2_hierarchicalGPU.fatbin.c" 1 3
+# 6 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c" 2 3
+# 1 "/tmp/tmpxft_00005733_00000000-2_hierarchicalGPU.fatbin.c" 1 3
 # 1 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 1 3
 # 33 "/usr/local/cuda/bin/..//include/fatBinaryCtl.h" 3
 # 1 "/usr/local/cuda-7.5/include/fatbinary.h" 1 3
@@ -59164,7 +59164,7 @@ typedef struct {
   void *filename_or_fatbins;
 
 } __fatBinC_Wrapper_t;
-# 2 "/tmp/tmpxft_0000304f_00000000-2_hierarchicalGPU.fatbin.c" 2 3
+# 2 "/tmp/tmpxft_00005733_00000000-2_hierarchicalGPU.fatbin.c" 2 3
 
 
 asm(
@@ -59993,7 +59993,7 @@ static const __fatBinC_Wrapper_t __fatDeviceText __attribute__ ((aligned (8))) _
  { 0x466243b1, 1, fatbinData, 0 };
 
 }
-# 7 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c" 2 3
+# 7 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c" 2 3
 static void __device_stub__Z23calcDistanceMatrix_CUDAiiPfPiS_(int, int, float *, int *, float *);
 extern void __device_stub__Z8min_CUDAjjPfPiS_S0_(unsigned, unsigned, float *, int *, float *, int *);
 static void __device_stub__Z27mergeElementsInsertAtA_CUDAiiiiPf(int, int, int, int, float *);
@@ -60003,7 +60003,7 @@ static void __device_stub__Z16moveCluster_CUDAiiiiPfS_Pi(int, int, int, int, flo
 static void __device_stub__Z39computeDistancesToBForPLargerThanB_CUDAiiiiPfS_Pi(int, int, int, int, float *, float *, int *);
 static void __device_stub__Z39recomputeMinDistanceForElementAt_j_CUDAiiiPfS_PiS_S0_(int, int, int, float *, float *, int *, float *, int *);
 static void __nv_cudaEntityRegisterCallback(void **);
-static void __sti____cudaRegisterAll_50_tmpxft_0000304f_00000000_7_hierarchicalGPU_cpp1_ii_2dea9178(void) __attribute__((__constructor__));
+static void __sti____cudaRegisterAll_50_tmpxft_00005733_00000000_7_hierarchicalGPU_cpp1_ii_2dea9178(void) __attribute__((__constructor__));
 static void __device_stub__Z23calcDistanceMatrix_CUDAiiPfPiS_(int __par0, int __par1, float *__par2, int *__par3, float *__par4){if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return;if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return;{ volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, float *, int *, float *))calcDistanceMatrix_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, float *, int *, float *))calcDistanceMatrix_CUDA))); };}
 # 90 "campaign/hierarchicalGPU.cu"
 static void calcDistanceMatrix_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,int *__cuda_3,float *__cuda_4)
@@ -60011,7 +60011,7 @@ static void calcDistanceMatrix_CUDA( int __cuda_0,int __cuda_1,float *__cuda_2,i
 {__device_stub__Z23calcDistanceMatrix_CUDAiiPfPiS_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4);
 # 118 "campaign/hierarchicalGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 void __device_stub__Z8min_CUDAjjPfPiS_S0_( unsigned __par0, unsigned __par1, float *__par2, int *__par3, float *__par4, int *__par5) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(unsigned, unsigned, float *, int *, float *, int *))min_CUDA)); (void)cudaLaunch(((char *)((void ( *)(unsigned, unsigned, float *, int *, float *, int *))min_CUDA))); }; }
 # 121 "campaign/hierarchicalGPU.cu"
 void min_CUDA( unsigned __cuda_0,unsigned __cuda_1,float *__cuda_2,int *__cuda_3,float *__cuda_4,int *__cuda_5)
@@ -60019,7 +60019,7 @@ void min_CUDA( unsigned __cuda_0,unsigned __cuda_1,float *__cuda_2,int *__cuda_3
 {__device_stub__Z8min_CUDAjjPfPiS_S0_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5);
 # 149 "campaign/hierarchicalGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 static void __device_stub__Z27mergeElementsInsertAtA_CUDAiiiiPf( int __par0, int __par1, int __par2, int __par3, float *__par4) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)12UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)16UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, int, float *))mergeElementsInsertAtA_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, int, float *))mergeElementsInsertAtA_CUDA))); }; }
 # 188 "campaign/hierarchicalGPU.cu"
 static void mergeElementsInsertAtA_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_3,float *__cuda_4)
@@ -60027,7 +60027,7 @@ static void mergeElementsInsertAtA_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,
 {__device_stub__Z27mergeElementsInsertAtA_CUDAiiiiPf( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4);
 # 196 "campaign/hierarchicalGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 static void __device_stub__Z27computeAllDistancesToA_CUDAiiiiPfS_PiS_S0_( int __par0, int __par1, int __par2, int __par3, float *__par4, float *__par5, int *__par6, float *__par7, int *__par8) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)12UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)32UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par7, sizeof(__par7), (size_t)40UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par8, sizeof(__par8), (size_t)48UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, int, float *, float *, int *, float *, int *))computeAllDistancesToA_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, int, float *, float *, int *, float *, int *))computeAllDistancesToA_CUDA))); }; }
 # 200 "campaign/hierarchicalGPU.cu"
 static void computeAllDistancesToA_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_3,float *__cuda_4,float *__cuda_5,int *__cuda_6,float *__cuda_7,int *__cuda_8)
@@ -60035,7 +60035,7 @@ static void computeAllDistancesToA_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,
 {__device_stub__Z27computeAllDistancesToA_CUDAiiiiPfS_PiS_S0_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6,__cuda_7,__cuda_8);
 # 257 "campaign/hierarchicalGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 static void __device_stub__Z19updateElementA_CUDAiPfPiS_S0_( int __par0, float *__par1, int *__par2, float *__par3, int *__par4) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)32UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, float *, int *, float *, int *))updateElementA_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, float *, int *, float *, int *))updateElementA_CUDA))); }; }
 # 260 "campaign/hierarchicalGPU.cu"
 static void updateElementA_CUDA( int __cuda_0,float *__cuda_1,int *__cuda_2,float *__cuda_3,int *__cuda_4)
@@ -60044,7 +60044,7 @@ static void updateElementA_CUDA( int __cuda_0,float *__cuda_1,int *__cuda_2,floa
 
 
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 static void __device_stub__Z16moveCluster_CUDAiiiiPfS_Pi( int __par0, int __par1, int __par2, int __par3, float *__par4, float *__par5, int *__par6) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)12UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)32UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, int, float *, float *, int *))moveCluster_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, int, float *, float *, int *))moveCluster_CUDA))); }; }
 # 292 "campaign/hierarchicalGPU.cu"
 static void moveCluster_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_3,float *__cuda_4,float *__cuda_5,int *__cuda_6)
@@ -60052,7 +60052,7 @@ static void moveCluster_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_
 {__device_stub__Z16moveCluster_CUDAiiiiPfS_Pi( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6);
 # 307 "campaign/hierarchicalGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 static void __device_stub__Z39computeDistancesToBForPLargerThanB_CUDAiiiiPfS_Pi( int __par0, int __par1, int __par2, int __par3, float *__par4, float *__par5, int *__par6) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)12UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)32UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, int, float *, float *, int *))computeDistancesToBForPLargerThanB_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, int, float *, float *, int *))computeDistancesToBForPLargerThanB_CUDA))); }; }
 # 310 "campaign/hierarchicalGPU.cu"
 static void computeDistancesToBForPLargerThanB_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,int __cuda_3,float *__cuda_4,float *__cuda_5,int *__cuda_6)
@@ -60060,7 +60060,7 @@ static void computeDistancesToBForPLargerThanB_CUDA( int __cuda_0,int __cuda_1,i
 {__device_stub__Z39computeDistancesToBForPLargerThanB_CUDAiiiiPfS_Pi( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6);
 # 350 "campaign/hierarchicalGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 static void __device_stub__Z39recomputeMinDistanceForElementAt_j_CUDAiiiPfS_PiS_S0_( int __par0, int __par1, int __par2, float *__par3, float *__par4, int *__par5, float *__par6, int *__par7) { if (cudaSetupArgument((void *)(char *)&__par0, sizeof(__par0), (size_t)0UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par1, sizeof(__par1), (size_t)4UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par2, sizeof(__par2), (size_t)8UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par3, sizeof(__par3), (size_t)16UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par4, sizeof(__par4), (size_t)24UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par5, sizeof(__par5), (size_t)32UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par6, sizeof(__par6), (size_t)40UL) != cudaSuccess) return; if (cudaSetupArgument((void *)(char *)&__par7, sizeof(__par7), (size_t)48UL) != cudaSuccess) return; { volatile static char *__f __attribute__((unused)); __f = ((char *)((void ( *)(int, int, int, float *, float *, int *, float *, int *))recomputeMinDistanceForElementAt_j_CUDA)); (void)cudaLaunch(((char *)((void ( *)(int, int, int, float *, float *, int *, float *, int *))recomputeMinDistanceForElementAt_j_CUDA))); }; }
 # 354 "campaign/hierarchicalGPU.cu"
 static void recomputeMinDistanceForElementAt_j_CUDA( int __cuda_0,int __cuda_1,int __cuda_2,float *__cuda_3,float *__cuda_4,int *__cuda_5,float *__cuda_6,int *__cuda_7)
@@ -60068,10 +60068,10 @@ static void recomputeMinDistanceForElementAt_j_CUDA( int __cuda_0,int __cuda_1,i
 {__device_stub__Z39recomputeMinDistanceForElementAt_j_CUDAiiiPfS_PiS_S0_( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6,__cuda_7);
 # 400 "campaign/hierarchicalGPU.cu"
 }
-# 1 "/tmp/tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 1 "/tmp/tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"
 static void __nv_cudaEntityRegisterCallback( void **__T225) { { volatile static void **__ref __attribute__((unused)); __ref = (volatile void **)__T225; }; __nv_save_fatbinhandle_for_managed_rt(__T225); __cudaRegisterFunction(__T225, (const char*)((void ( *)(int, int, int, float *, float *, int *, float *, int *))recomputeMinDistanceForElementAt_j_CUDA), (char*)"_Z39recomputeMinDistanceForElementAt_j_CUDAiiiPfS_PiS_S0_", "_Z39recomputeMinDistanceForElementAt_j_CUDAiiiPfS_PiS_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T225, (const char*)((void ( *)(int, int, int, int, float *, float *, int *))computeDistancesToBForPLargerThanB_CUDA), (char*)"_Z39computeDistancesToBForPLargerThanB_CUDAiiiiPfS_Pi", "_Z39computeDistancesToBForPLargerThanB_CUDAiiiiPfS_Pi", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T225, (const char*)((void ( *)(int, int, int, int, float *, float *, int *))moveCluster_CUDA), (char*)"_Z16moveCluster_CUDAiiiiPfS_Pi", "_Z16moveCluster_CUDAiiiiPfS_Pi", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T225, (const char*)((void ( *)(int, float *, int *, float *, int *))updateElementA_CUDA), (char*)"_Z19updateElementA_CUDAiPfPiS_S0_", "_Z19updateElementA_CUDAiPfPiS_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T225, (const char*)((void ( *)(int, int, int, int, float *, float *, int *, float *, int *))computeAllDistancesToA_CUDA), (char*)"_Z27computeAllDistancesToA_CUDAiiiiPfS_PiS_S0_", "_Z27computeAllDistancesToA_CUDAiiiiPfS_PiS_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T225, (const char*)((void ( *)(int, int, int, int, float *))mergeElementsInsertAtA_CUDA), (char*)"_Z27mergeElementsInsertAtA_CUDAiiiiPf", "_Z27mergeElementsInsertAtA_CUDAiiiiPf", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T225, (const char*)((void ( *)(unsigned, unsigned, float *, int *, float *, int *))min_CUDA), (char*)"_Z8min_CUDAjjPfPiS_S0_", "_Z8min_CUDAjjPfPiS_S0_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); __cudaRegisterFunction(__T225, (const char*)((void ( *)(int, int, float *, int *, float *))calcDistanceMatrix_CUDA), (char*)"_Z23calcDistanceMatrix_CUDAiiPfPiS_", "_Z23calcDistanceMatrix_CUDAiiPfPiS_", -1, (uint3*)0, (uint3*)0, (dim3*)0, (dim3*)0, (int*)0); }
-static void __sti____cudaRegisterAll_50_tmpxft_0000304f_00000000_7_hierarchicalGPU_cpp1_ii_2dea9178(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
+static void __sti____cudaRegisterAll_50_tmpxft_00005733_00000000_7_hierarchicalGPU_cpp1_ii_2dea9178(void) { __cudaFatCubinHandle = __cudaRegisterFatBinary((void*)&__fatDeviceText); { void (*callback_fp)(void **) = (void (*)(void **))(__nv_cudaEntityRegisterCallback); (*callback_fp)(__cudaFatCubinHandle); } atexit(__cudaUnregisterBinaryUtil); }
 
 #pragma GCC diagnostic pop
-# 2 "tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c" 2
-# 1 "tmpxft_0000304f_00000000-4_hierarchicalGPU.cudafe1.stub.c"
+# 2 "tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c" 2
+# 1 "tmpxft_00005733_00000000-4_hierarchicalGPU.cudafe1.stub.c"

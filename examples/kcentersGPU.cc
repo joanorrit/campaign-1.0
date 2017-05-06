@@ -75,13 +75,13 @@ int main(int argc, const char* argv[])
     data = new DataIO;
     float* x = data->readData(defaults->getInputFileName().c_str());
     /*############# Add this for revert ################*/
-    /*int N = data->getNumElements();
+    int N = data->getNumElements();
     int K = data->getNumClusters();
-    int D = data->getDimensions();*/
+    int D = data->getDimensions();
 
-    int N = 1000000;
+    /*int N = 1000000;
     int K = 10;
-    int D = 100;
+    int D = 100;*/
 
     //data->generateClusters(N, K, D);
     //float * x = data->getPoints();
@@ -97,7 +97,7 @@ int main(int argc, const char* argv[])
     kcentersGPU(N, K, D, x, assign, dist, centroids, seed, data);
     timer.stop("kcentersGPU");
     
-    /*// print results
+    // print results
     FLOAT_TYPE* ctr = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * K * D); // cluster centers
     // for each centroid
     for (int i = 0; i < K; i++)
