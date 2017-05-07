@@ -1,9 +1,8 @@
 #include "Generator.h"
-#include <iostream>
-#include "time.h"
-#define RADIUS 205456
 
 using namespace std;
+
+#define RADIUS 205456
 
 Generator::Generator()
 {
@@ -36,9 +35,16 @@ void Generator::usageLessPointsThanClusters()
  */
 void Generator::printPoints() 
 {	
-	for (int i = 0; i < this->totalPoints; i++)
-	{
-		cout << this->points[i] << endl;
+	if (this->accessContiguousActivated) {
+		for (int i = 0; i < this->totalPoints; i++)
+		{	
+			cout << this->pointsContiguous[i] << endl;
+		}
+	} else {
+		for (int i = 0; i < this->totalPoints; i++)
+		{		
+			cout << this->points[i] << endl;
+		}
 	}
 }
 
@@ -53,6 +59,40 @@ void Generator::generateCenters()
 		centerModule *= rand() % 8 + 1;
 		if (!centerModule) centerModule += 1;
 	}
+}
+
+/**
+ * Generates a cotinguous dimensions set of points, with a
+ * gived set of points passed by param.
+ */
+float * Generator::generateClustersContiguousByIntercalatedPoints(float * points, int totalPoints, int D)
+{
+	float * pointsContiguous = (float *) malloc(totalPoints * sizeof(float));
+	for (int actualPoint = 0; actualPoint < totalPoints/D; actualPoint++) {
+		int iniPositionPoint = actualPoint * D;
+		for (int dimension = 0; dimension < D; dimension++){
+			pointsContiguous[actualPoint + dimension * (totalPoints/D)] = points[iniPositionPoint + dimension];
+		}
+	}
+	return pointsContiguous;
+}	
+
+/**
+ * Generates an intercalated dimensions set of points, with a
+ * gived set of points passed by param.
+ */
+float * Generator::generateClustersIntercalatedByContiguousPoints(float * pointsContiguous, int D, int N)
+{
+	int totalPoints = N * D;
+	float * pointsIntercalated = (float *) malloc(totalPoints * sizeof(float));
+	for (int actualPoint = 0; actualPoint < totalPoints/D; actualPoint++) {
+		int offset = 0;
+		for (int dimension = 0; dimension < D; dimension++){
+			pointsIntercalated[actualPoint * D + dimension] = pointsContiguous[actualPoint + offset];
+			offset += N;
+		}
+	}
+	return pointsIntercalated;
 }
 
 /**
@@ -111,6 +151,10 @@ void Generator::setD(int D)
 	this->D = D;
 }
 
+/**
+ * Mallocs all memory necessary for
+ * generating the sets of points.
+ */
 void Generator::mallocMemoryForPoints() 
 {
 	this->totalPointsPerCluster = this->N / this->K;
@@ -120,12 +164,43 @@ void Generator::mallocMemoryForPoints()
 	this->pointsContiguous = (float *) malloc(this->totalPoints * sizeof(float));
 }
 
+/**
+ * Gets the set of point in an intercalated structure
+ */
 float * Generator::getIntercalatePoints()
 {
 	return this->points;
 }
 
+/**
+ * Gets the set of point in an contiguous structure
+ */
 float * Generator::getContiguousPoints()
 {
 	return this->pointsContiguous;
-}	
+}
+
+int Generator::getN()
+{
+	return this->N;
+}
+
+int Generator::getK()
+{
+	return this->K;
+}
+
+int Generator::getD()
+{
+	return this->D;
+}
+
+bool Generator::contiguousAccessIsActivated()
+{
+	return this->accessContiguousActivated;
+}
+
+void Generator::activateContiguousAccess()
+{
+	this->accessContiguousActivated = true;
+}

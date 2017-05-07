@@ -83,8 +83,6 @@ int main(int argc, const char* argv[])
     int K = 10;
     int D = 100;*/
 
-    //data->generateClusters(N, K, D);
-    //float * x = data->getPoints();
     FLOAT_TYPE* dist = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * N); // cluster means
     for (int i = 0; i < N; i++) dist[i] = FLT_MAX;
     int* centroids = (int*) malloc(sizeof(int) * K);  // centroid indices

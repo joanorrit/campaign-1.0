@@ -34,6 +34,24 @@ int main(int argc, char *argv[])
 
 	generator.generateClustersContiguous();
 	
+	int N = generator.getN();
+	int D = generator.getD();
+	float * points = (float *) malloc(N * D * sizeof(float));
+	
+	points = generator.generateClustersIntercalatedByContiguousPoints(
+			generator.getContiguousPoints(),
+			D,
+			N);
+
+	for (int i = 0; i < N*D; i++) {
+		cout << points[i] << endl;
+	}
+
+	cout << endl;
+	cout << "-----------------------------------------------------------" << endl;
+	cout << endl;
+
+
 	generator.printPoints();
 }
 

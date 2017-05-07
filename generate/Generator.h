@@ -20,6 +20,8 @@ class Generator {
 		void mallocMemoryForPoints();
 		float * getIntercalatePoints();
 		float * getContiguousPoints();
+		float * generateClustersContiguousByIntercalatedPoints(float * points, int totalPoints, int D);
+		float * generateClustersIntercalatedByContiguousPoints(float * pointsContiguous, int D, int N);
 		int getN();
 		int getK();
 		int getD();

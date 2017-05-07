@@ -1,3 +1,5 @@
+#include <iostream>
+
 #ifndef __GENERATOR_H_
 #define __GENERATOR_H_
 
@@ -13,11 +15,17 @@ class Generator {
 		void generateClustersContiguous();
 		void setN(int N);
 		void setK(int K);
-		void setD(int D);
+		void setD(int D);	
+		void activateContiguousAccess();
 		void mallocMemoryForPoints();
 		float * getIntercalatePoints();
 		float * getContiguousPoints();
-		
+		float * generateClustersContiguousByIntercalatedPoints(float * points, int totalPoints, int D);
+		float * generateClustersIntercalatedByContiguousPoints(float * pointsContiguous, int D, int N);
+		int getN();
+		int getK();
+		int getD();
+		bool contiguousAccessIsActivated();
 
 	private:
 		int N;
@@ -28,6 +36,7 @@ class Generator {
 		float * centers;
 		float * points;
 		float * pointsContiguous;
+		bool accessContiguousActivated = false;
 };
 
 #endif

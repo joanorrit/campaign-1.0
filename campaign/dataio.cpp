@@ -369,8 +369,13 @@ float* DataIO::readData(const char* fileName)
     float* data;
     if (fileName == "") data = ip->readStdIn();
     else data = ip->readFile(fileName);
-    return data;
 
+    int totalPoints = ip->getNumElements() * ip->getDimensions();
+    int D = ip->getDimensions();
+    Generator generator;
+
+    return generator.generateClustersIntercalatedByContiguousPoints(data, totalPoints, D);
+    //return data;
   
     /*Generator generator;
 
