@@ -1,4 +1,0 @@
-campaign/libcampaign_manhattan_1.0_la-hierarchicalGPU.manhattan.cu.lo: \
- campaign/hierarchicalGPU.manhattan.cu.cpp /usr/include/stdc-predef.h
-
-/usr/include/stdc-predef.h:

@@ -1,4 +1,0 @@
-campaign/libcampaign_chebyshev_1.0_la-hierarchicalGPU.chebyshev.cu.lo: \
- campaign/hierarchicalGPU.chebyshev.cu.cpp /usr/include/stdc-predef.h
-
-/usr/include/stdc-predef.h:
