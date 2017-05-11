@@ -369,13 +369,35 @@ float* DataIO::readData(const char* fileName)
     float* data;
     if (fileName == "") data = ip->readStdIn();
     else data = ip->readFile(fileName);
+    return data;
 
-    int totalPoints = ip->getNumElements() * ip->getDimensions();
+    /*int N = ip->getNumElements(); 
     int D = ip->getDimensions();
-    Generator generator;
+    Generator generator;*/
 
-    return generator.generateClustersIntercalatedByContiguousPoints(data, totalPoints, D);
+    /*float totalPoints = N * D;
+    //float * prova = generator.generateClustersIntercalatedByContiguousPoints(data, N, D);
+    float * prova = generator.generateClustersContiguousByIntercalatedPoints(data, N, D);
+    for (int i = 0; i < totalPoints; i++) {
+	    cout << data[i] << endl;
+    }
+    cout << endl;
+    cout << "-------------------------------------------------------------";
+    cout << endl;
+    for (int i = 0; i < totalPoints; i++) {
+	    cout << prova[i] << endl;
+    }
+    exit(0);*/
+
+    /*float totalPoints = N * D;
+    float * prova = generator.generateClustersIntercalatedByContiguousPoints(data, N, D);
+    for (int i = 0; i < totalPoints; i++) {
+	    cout << prova[i] << endl;
+    }
+    exit(0);*/
+    
     //return data;
+    //return generator.generateClustersIntercalatedByContiguousPoints(data, N, D);
   
     /*Generator generator;
 
@@ -481,6 +503,7 @@ void DataIO::printClusters(int numData, int numClust, int numDim, float *data, f
     // if vector length > 1
     else
     {
+	int N = ip->getNumElements();
         // for each cluster center
         for (int i = 0; i < numClust; i++)
         {
@@ -494,7 +517,8 @@ void DataIO::printClusters(int numData, int numClust, int numDim, float *data, f
                 {
                     // print out vectors
                     cout << "{";
-                    for (int cnt = 0; cnt < numDim; cnt++) cout << data[numDim * j + cnt] << ((cnt < numDim-1) ? ", " : "");
+                    //for (int cnt = 0; cnt < numDim; cnt++) cout << data[numDim * j + cnt] << ((cnt < numDim-1) ? ", " : "");
+                    for (int cnt = 0; cnt < numDim; cnt++) cout << data[cnt*numData + j] << ((cnt < numDim-1) ? ", " : "");
                     cout << "}, ";
                     count++;
                 }
@@ -506,6 +530,7 @@ void DataIO::printClusters(int numData, int numClust, int numDim, float *data, f
                 // print cluster center
                 cout << ") ctr {";
                 for (int cnt = 0; cnt < numDim; cnt++) cout << ctr[numDim * i + cnt] << ", ";
+                //for (int cnt = 0; cnt < numDim; cnt++) cout << ctr[ cnt*numClust + i] << ", ";
                 cout << "\b\b}" << endl;;
             }
             else cout << ")" << endl;

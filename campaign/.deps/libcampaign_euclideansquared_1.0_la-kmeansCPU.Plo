@@ -172,7 +172,8 @@ campaign/libcampaign_euclideansquared_1.0_la-kmeansCPU.lo: \
  /usr/include/c++/6/bits/locale_conv.h \
  /usr/include/c++/6/bits/stringfwd.h /usr/include/c++/6/bits/allocator.h \
  /usr/include/c++/6/bits/codecvt.h /usr/include/c++/6/bits/unique_ptr.h \
- /usr/include/c++/6/bits/quoted_string.h campaign/../campaign/tokens.h
+ /usr/include/c++/6/bits/quoted_string.h campaign/../campaign/tokens.h \
+ campaign/../campaign/Generator.h
 
 /usr/include/stdc-predef.h:
 
@@ -651,3 +652,5 @@ campaign/../campaign/timing.h:
 /usr/include/c++/6/bits/quoted_string.h:
 
 campaign/../campaign/tokens.h:
+
+campaign/../campaign/Generator.h:

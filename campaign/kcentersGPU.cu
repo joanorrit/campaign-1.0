@@ -93,10 +93,9 @@ __global__ void checkCentroid_CUDA(int N, int D, int iter, int centroid, FLOAT_T
             // compute distance in each dimension separately and build sum
             for (int d = 0; d < min(blockDim.x, D - offsetD); d++)
             {
-                //dist += distanceComponentGPU(s_ctr + d - offsetD, X + (offsetD + d) * N + t); //this was wrong
                 //dist += distanceComponentGPU(s_ctr + d - offsetD, X + (offsetD + d) * N + t);
-                //dist += distanceComponentGPU(s_ctr + d, X + (offsetD + d) * N + t);
-                dist += distanceComponentGPU(s_ctr + d, X +  t*D + offsetD + d);
+                dist += distanceComponentGPU(s_ctr + d, X + (offsetD + d) * N + t);
+                //dist += distanceComponentGPU(s_ctr + d, X +  t*D + offsetD + d);
             }
             offsetD += blockDim.x;
             __syncthreads();
@@ -133,7 +132,7 @@ void kcentersGPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *di
     int sMem = (2 * sizeof(FLOAT_TYPE) + sizeof(int)) * THREADSPERBLOCK;
     //Timing timer;
     //timer.init("kcenterGPU kernel");
-    
+ 
     // GPU memory pointers, allocate and initialize device memory
     FLOAT_TYPE *dist_d         = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * N, dist);
     int   *assign_d       = data->allocDeviceMemory<int*>  (sizeof(int)   * N);
@@ -141,7 +140,7 @@ void kcentersGPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *di
     FLOAT_TYPE *ctr_d          = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * D);
     FLOAT_TYPE *maxDistBlock_d = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * numBlock);
     int   *maxIdBlock_d   = data->allocDeviceMemory<int*>  (sizeof(int)   * numBlock);
-    
+   
     // Initialize host memory
     FLOAT_TYPE *maxDistBlock = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * numBlock);
     int   *maxID        = (int*)   malloc(sizeof(int));
@@ -153,9 +152,10 @@ void kcentersGPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *di
     {
         // send centroid coordinates for current iteration to device memory
         for (int d = 0; d < D; d++) ctr[d] = x[d * N + centroid];
+        //for (int d = 0; d < D; d++) ctr[d] = x[d + centroid*D];
         cudaMemcpy(ctr_d, ctr, sizeof(FLOAT_TYPE) * D, cudaMemcpyHostToDevice);      
-        centroids[k] = centroid;
-        
+        centroids[k] = centroid; 
+
         // for each data point, check if new centroid closer than previous best and if, reassign
 	//timer.start("kcenterGPU kernel");
         checkCentroid_CUDA<<<grid, block, sMem>>>(N, D, k, centroid, x_d, ctr_d, dist_d, assign_d, maxDistBlock_d, maxIdBlock_d);

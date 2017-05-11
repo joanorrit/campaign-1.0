@@ -59,6 +59,7 @@ int main(int argc, const char* argv[])
 {
     // Initialization
     Timing timer;
+    Generator generator;
     
     // Parse command line
     Defaults *defaults = new Defaults(argc, argv, "kc");
@@ -79,10 +80,6 @@ int main(int argc, const char* argv[])
     int K = data->getNumClusters();
     int D = data->getDimensions();
 
-    /*int N = 1000000;
-    int K = 10;
-    int D = 100;*/
-
     FLOAT_TYPE* dist = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * N); // cluster means
     for (int i = 0; i < N; i++) dist[i] = FLT_MAX;
     int* centroids = (int*) malloc(sizeof(int) * K);  // centroid indices
@@ -102,7 +99,9 @@ int main(int argc, const char* argv[])
         // for each dimension
         for (int d = 0; d < D; d++) 
             // collect centroid coordinates
-            ctr[i * D + d] = x[centroids[i] * D + d];
+            //ctr[i * D + d] = x[centroids[i] * D + d];
+            ctr[i * D + d] = x[d * N + centroids[i]];
+
     data->printClusters(N, K, D, x, ctr, assign);
     free(ctr); ctr = NULL;
    // if (data->doPrintTime()) timer.report(); 

@@ -172,7 +172,8 @@ campaign/libcampaign_euclidean_1.0_la-somCPU.lo: campaign/somCPU.cpp \
  /usr/include/c++/6/bits/locale_conv.h \
  /usr/include/c++/6/bits/stringfwd.h /usr/include/c++/6/bits/allocator.h \
  /usr/include/c++/6/bits/codecvt.h /usr/include/c++/6/bits/unique_ptr.h \
- /usr/include/c++/6/bits/quoted_string.h campaign/../campaign/tokens.h
+ /usr/include/c++/6/bits/quoted_string.h campaign/../campaign/tokens.h \
+ campaign/../campaign/Generator.h
 
 /usr/include/stdc-predef.h:
 
@@ -651,3 +652,5 @@ campaign/../campaign/timing.h:
 /usr/include/c++/6/bits/quoted_string.h:
 
 campaign/../campaign/tokens.h:
+
+campaign/../campaign/Generator.h:

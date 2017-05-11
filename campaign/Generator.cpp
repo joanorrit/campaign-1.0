@@ -65,8 +65,9 @@ void Generator::generateCenters()
  * Generates a cotinguous dimensions set of points, with a
  * gived set of points passed by param.
  */
-float * Generator::generateClustersContiguousByIntercalatedPoints(float * points, int totalPoints, int D)
+float * Generator::generateClustersContiguousByIntercalatedPoints(float * points, int N, int D)
 {
+	totalPoints = N * D;
 	float * pointsContiguous = (float *) malloc(totalPoints * sizeof(float));
 	for (int actualPoint = 0; actualPoint < totalPoints/D; actualPoint++) {
 		int iniPositionPoint = actualPoint * D;
@@ -81,7 +82,7 @@ float * Generator::generateClustersContiguousByIntercalatedPoints(float * points
  * Generates an intercalated dimensions set of points, with a
  * gived set of points passed by param.
  */
-float * Generator::generateClustersIntercalatedByContiguousPoints(float * pointsContiguous, int D, int N)
+float * Generator::generateClustersIntercalatedByContiguousPoints(float * pointsContiguous, int N, int D)
 {
 	int totalPoints = N * D;
 	float * pointsIntercalated = (float *) malloc(totalPoints * sizeof(float));

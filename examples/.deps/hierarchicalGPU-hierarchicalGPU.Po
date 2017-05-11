@@ -169,7 +169,8 @@ hierarchicalGPU-hierarchicalGPU.o: hierarchicalGPU.cc \
  /usr/include/c++/6/bits/locale_conv.h \
  /usr/include/c++/6/bits/stringfwd.h /usr/include/c++/6/bits/allocator.h \
  /usr/include/c++/6/bits/codecvt.h /usr/include/c++/6/bits/unique_ptr.h \
- /usr/include/c++/6/bits/quoted_string.h ../campaign/tokens.h
+ /usr/include/c++/6/bits/quoted_string.h ../campaign/tokens.h \
+ ../campaign/Generator.h
 
 /usr/include/stdc-predef.h:
 
@@ -646,3 +647,5 @@ hierarchicalGPU-hierarchicalGPU.o: hierarchicalGPU.cc \
 /usr/include/c++/6/bits/quoted_string.h:
 
 ../campaign/tokens.h:
+
+../campaign/Generator.h:

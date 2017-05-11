@@ -68,5 +68,6 @@
 #include "campaign/somGPU.h"
 #include "campaign/timing.h"
 #include "campaign/tokens.h"
+#include "campaign/Generator.h"
 
 #endif
