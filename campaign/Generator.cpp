@@ -17,7 +17,7 @@ Generator::~Generator()
  */
 void Generator::usageInvalidInput() 
 {
-	printf("INVALID INPUT. You must enter N (points), K (clusters), D (dimensions) for generating the set of points\n");
+	//printf("INVALID INPUT. You must enter N (points), K (clusters), D (dimensions) for generating the set of points\n");
 	exit(0);
 }
 
@@ -26,7 +26,7 @@ void Generator::usageInvalidInput()
  */
 void Generator::usageLessPointsThanClusters()
 {
-	printf("INVALID INPUT N < K!!! You must enter more points thant clusters. N >> K\n");
+	//printf("INVALID INPUT N < K!!! You must enter more points thant clusters. N >> K\n");
 	exit(0);
 }
 

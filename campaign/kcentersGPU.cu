@@ -40,10 +40,43 @@
  * \date 12/2/2010
  * \version 1.0
  **/
-
+#include <cstdio>
 #include "kcentersGPU.h"
+#include "timing.h"
+#include <iostream>
 
-using namespace std;
+#define SHARED_MEM 0
+#define INTERCALATED_DATA 1
+
+#ifdef SHARED_MEM
+#define MEMBARRIER() __syncthreads()
+#define WARPMEMBARRIER()
+#else
+#define MEMBARRIER() {__threadfence();__syncthreads();}
+#define WARPMEMBARRIER() {__threadfence();__syncthreads();}
+#endif
+
+
+template <class T, class U>
+__device__ static void parallelMax(int BLOCKSIZE, int tid, T *s_A, U *s_B)
+{
+    if (BLOCKSIZE >= 1024) { if (tid < 512 && s_A[tid + 512] > s_A[tid]) { s_A[tid] = s_A[tid + 512]; s_B[tid] = s_B[tid + 512]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  512) { if (tid < 256 && s_A[tid + 256] > s_A[tid]) { s_A[tid] = s_A[tid + 256]; s_B[tid] = s_B[tid + 256]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  256) { if (tid < 128 && s_A[tid + 128] > s_A[tid]) { s_A[tid] = s_A[tid + 128]; s_B[tid] = s_B[tid + 128]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  128) { if (tid <  64 && s_A[tid +  64] > s_A[tid]) { s_A[tid] = s_A[tid +  64]; s_B[tid] = s_B[tid +  64]; } MEMBARRIER(); }
+    
+    if (tid < 32)
+    {
+        volatile T *vs_A = s_A;
+        volatile U *vs_B = s_B;
+        if (BLOCKSIZE >= 64) { if (vs_A[tid + 32] > vs_A[tid]) { vs_A[tid] = vs_A[tid + 32]; vs_B[tid] = vs_B[tid + 32]; } WARPMEMBARRIER();}
+        if (BLOCKSIZE >= 32) { if (vs_A[tid + 16] > vs_A[tid]) { vs_A[tid] = vs_A[tid + 16]; vs_B[tid] = vs_B[tid + 16]; } WARPMEMBARRIER();}
+        if (BLOCKSIZE >= 16) { if (vs_A[tid +  8] > vs_A[tid]) { vs_A[tid] = vs_A[tid +  8]; vs_B[tid] = vs_B[tid +  8]; } WARPMEMBARRIER();}
+        if (BLOCKSIZE >=  8) { if (vs_A[tid +  4] > vs_A[tid]) { vs_A[tid] = vs_A[tid +  4]; vs_B[tid] = vs_B[tid +  4]; } WARPMEMBARRIER();}
+        if (BLOCKSIZE >=  4) { if (vs_A[tid +  2] > vs_A[tid]) { vs_A[tid] = vs_A[tid +  2]; vs_B[tid] = vs_B[tid +  2]; } WARPMEMBARRIER();}
+        if (BLOCKSIZE >=  2) { if (vs_A[tid +  1] > vs_A[tid]) { vs_A[tid] = vs_A[tid +  1]; vs_B[tid] = vs_B[tid +  1]; } WARPMEMBARRIER();}
+    }
+}
 
 
 template <unsigned int BLOCKSIZE, class T, class U>
@@ -67,20 +100,38 @@ __device__ static void parallelMax(int tid, T *s_A, U *s_B)
 
 
 
-__global__ void checkCentroid_CUDA(int N, int D, int iter, int centroid, FLOAT_TYPE *X, FLOAT_TYPE *CTR, FLOAT_TYPE *DIST, int *ASSIGN, FLOAT_TYPE *MAXDIST, int *MAXID)
+__global__ void checkCentroid_CUDA(int TPB, int N, int D, int iter, int centroid, FLOAT_TYPE *X, FLOAT_TYPE *CTR, FLOAT_TYPE *DIST, int *ASSIGN, FLOAT_TYPE *MAXDIST, int *MAXID)
 {
+
+unsigned int tid = threadIdx.x;                   // thread ID in block
+unsigned int t   = blockIdx.x * blockDim.x + tid; // global thread ID
+
+#ifdef SHARED_MEM
     extern __shared__ FLOAT_TYPE array[];                  // shared memory
     FLOAT_TYPE *s_dist    = (FLOAT_TYPE*) array;                // tpb distances
     int   *s_ID      = (int*)   &s_dist[blockDim.x];  // tpb IDs
     FLOAT_TYPE *s_ctr     = (FLOAT_TYPE*) &s_ID[blockDim.x];    // tpb centroid components
-    
-    unsigned int tid = threadIdx.x;                   // thread ID in block
-    unsigned int t   = blockIdx.x * blockDim.x + tid; // global thread ID
-    
+#else    
+    FLOAT_TYPE *s_dist;
+    int   *s_ID;
+    extern __shared__ FLOAT_TYPE array[];                  // shared memory
+    FLOAT_TYPE *s_ctr     = (FLOAT_TYPE*) array;    // tpb centroid components
+    //FLOAT_TYPE s_ctr[THREADSPERBLOCK];
+#endif
+
+#ifndef SHARED_MEM
+    int origAssign;
+    FLOAT_TYPE origDist;
+    s_ID = &ASSIGN[t-(t%TPB)];
+    s_dist = &DIST[t-(t%TPB)];
+    origDist = DIST[t];
+    origAssign = ASSIGN[t];
+#endif
+
     s_dist[tid] = 0.0;
     s_ID  [tid] = t;
-    if (t < N)
-    {
+   // if (t < N)
+   // {
         // compute distance
         FLOAT_TYPE dist    = 0.0;
         int   offsetD = 0;
@@ -89,58 +140,107 @@ __global__ void checkCentroid_CUDA(int N, int D, int iter, int centroid, FLOAT_T
         {
             // read up to tpb components from global to shared memory
             if (offsetD + tid < D) s_ctr[tid] = CTR[offsetD + tid];
-            __syncthreads();
+            //__syncthreads();
+	    MEMBARRIER();
             // compute distance in each dimension separately and build sum
+	if (t < N) {
             for (int d = 0; d < min(blockDim.x, D - offsetD); d++)
             {
                 //dist += distanceComponentGPU(s_ctr + d - offsetD, X + (offsetD + d) * N + t);
+#ifdef INTERCALATED_DATA
+                dist += distanceComponentGPU(s_ctr + d, X +  t*D + offsetD + d);
+#else
                 dist += distanceComponentGPU(s_ctr + d, X + (offsetD + d) * N + t);
-                //dist += distanceComponentGPU(s_ctr + d, X +  t*D + offsetD + d);
+#endif
             }
+	}
             offsetD += blockDim.x;
-            __syncthreads();
+            // __syncthreads();
+	    MEMBARRIER();
         }
-        dist = distanceFinalizeGPU<FLOAT_TYPE>(1, &dist);
+        if (t < N) {
+            dist = distanceFinalizeGPU<FLOAT_TYPE>(1, &dist);
         // if new distance smaller then update assignment
+#ifdef SHARED_MEM
         FLOAT_TYPE currDist = DIST[t];
+#else
+        FLOAT_TYPE currDist = origDist;
+#endif
         if (dist < currDist)
         {
+#ifdef SHARED_MEM
             DIST  [t] = currDist = dist;
             ASSIGN[t] = iter;
+#else       
+	    origDist = currDist = dist;
+            origAssign = iter;
+#endif
         }
         s_dist[tid] = currDist;
-    }
-    __syncthreads();
+       }
+    //__syncthreads();
+    MEMBARRIER();
     // find max distance of data point to centroid and its index in block
-    parallelMax<THREADSPERBLOCK>(tid, s_dist, s_ID);
+    //parallelMax<THREADSPERBLOCK>(tid, s_dist, s_ID);
+
+    parallelMax(TPB, tid, s_dist, s_ID);
+    MEMBARRIER();
     // write maximum distance and index to global mem
-    if (tid == 0) 
-    {
-        MAXDIST[blockIdx.x] = s_dist[tid];
-        MAXID  [blockIdx.x] = s_ID[tid];
+    if (t < N) {
+    	if (tid == 0) 
+    	{
+        	/*MAXDIST[blockIdx.x] = s_dist[tid];
+        	MAXID  [blockIdx.x] = s_ID[tid];*/
+            int blockID = blockIdx.y*gridDim.x + blockIdx.x;
+            MAXDIST[blockID] = s_dist[tid];
+            MAXID  [blockID] = s_ID[tid];
+		
+    	}
+#ifndef SHARED_MEM
+        DIST[t] = origDist;
+        ASSIGN[t] = origAssign;
+#endif
     }
 }
 
-
-
-void kcentersGPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *dist, int *centroids, int seed, DataIO *data)
+void kcentersGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *dist, int *centroids, int seed, DataIO *data)
 {
     // CUDA kernel parameters
     int numBlock = (int) ceil((FLOAT_TYPE) N / (FLOAT_TYPE) THREADSPERBLOCK);
-    dim3 block(THREADSPERBLOCK);
-    dim3 grid(numBlock);
-    int sMem = (2 * sizeof(FLOAT_TYPE) + sizeof(int)) * THREADSPERBLOCK;
+    //dim3 block(THREADSPERBLOCK);
+    //dim3 grid(numBlock);
+    dim3 grid;
+    if (numBlock>65535) {
+cout << "2D grid: " << sqrt(numBlock) + 1 << endl;
+      grid = dim3(sqrt(numBlock) + 1, sqrt(numBlock) + 1);
+    }
+    else {
+      grid = dim3(numBlock);
+    }
+    dim3 block(TPB);
+    int sMem = (2 * sizeof(FLOAT_TYPE) + sizeof(int)) * TPB;//THREADSPERBLOCK;
+
     //Timing timer;
-    //timer.init("kcenterGPU kernel");
+    Timing timer;
+
+    timer.init("kcenterGPU kernel");
  
     // GPU memory pointers, allocate and initialize device memory
-    FLOAT_TYPE *dist_d         = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * N, dist);
+    /*FLOAT_TYPE *dist_d         = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * N, dist);
     int   *assign_d       = data->allocDeviceMemory<int*>  (sizeof(int)   * N);
     FLOAT_TYPE *x_d            = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * N * D, x);
     FLOAT_TYPE *ctr_d          = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * D);
     FLOAT_TYPE *maxDistBlock_d = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * numBlock);
+    int   *maxIdBlock_d   = data->allocDeviceMemory<int*>  (sizeof(int)   * numBlock);*/
+
+    int NMAX = N + ( ((N%TPB)==0) ? 0 : TPB-(N%TPB) ); // for non shared memory reductions 
+    FLOAT_TYPE *dist_d         = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * NMAX, dist);
+    int   *assign_d       = data->allocDeviceMemory<int*>  (sizeof(int)   * NMAX);
+    FLOAT_TYPE *x_d            = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * N * D, x);
+    FLOAT_TYPE *ctr_d          = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * D);
+    FLOAT_TYPE *maxDistBlock_d = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * numBlock);
     int   *maxIdBlock_d   = data->allocDeviceMemory<int*>  (sizeof(int)   * numBlock);
-   
+    
     // Initialize host memory
     FLOAT_TYPE *maxDistBlock = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * numBlock);
     int   *maxID        = (int*)   malloc(sizeof(int));
@@ -151,20 +251,23 @@ void kcentersGPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *di
     for (int k = 0; k < K; ++k)
     {
         // send centroid coordinates for current iteration to device memory
+#ifdef INTERCALATED_DATA
+        for (int d = 0; d < D; d++) ctr[d] = x[d + centroid*D];
+#else
         for (int d = 0; d < D; d++) ctr[d] = x[d * N + centroid];
-        //for (int d = 0; d < D; d++) ctr[d] = x[d + centroid*D];
+#endif
         cudaMemcpy(ctr_d, ctr, sizeof(FLOAT_TYPE) * D, cudaMemcpyHostToDevice);      
         centroids[k] = centroid; 
 
         // for each data point, check if new centroid closer than previous best and if, reassign
-	//timer.start("kcenterGPU kernel");
-        checkCentroid_CUDA<<<grid, block, sMem>>>(N, D, k, centroid, x_d, ctr_d, dist_d, assign_d, maxDistBlock_d, maxIdBlock_d);
-	//timer.stop("kcenterGPU kernel");
+	timer.start("kcenterGPU kernel");
+        checkCentroid_CUDA<<<grid, block, sMem>>>(TPB, N, D, k, centroid, x_d, ctr_d, dist_d, assign_d, maxDistBlock_d, maxIdBlock_d);
+	timer.stop("kcenterGPU kernel");
         CUT_CHECK_ERROR("checkCentroid_CUDA() kernel execution failed");
         
         // get next max distance between data point and centroid
-        cudaMemcpy(maxDistBlock, maxDistBlock_d, sizeof(FLOAT_TYPE) * numBlock, cudaMemcpyDeviceToHost);        
         int tempMax = 0;
+        cudaMemcpy(maxDistBlock, maxDistBlock_d, sizeof(FLOAT_TYPE) * numBlock, cudaMemcpyDeviceToHost);        
         for (int i = 1; i < numBlock; i++) 
         {
             if (maxDistBlock[i] > maxDistBlock[tempMax]) tempMax = i;
@@ -185,9 +288,7 @@ void kcentersGPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *di
     free(maxDistBlock);
     free(maxID);
     free(ctr);
-    
-
-    //timer.report();
+    timer.report();
 }
 
 

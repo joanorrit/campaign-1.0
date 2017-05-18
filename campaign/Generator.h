@@ -1,7 +1,25 @@
-#include <iostream>
+#ifdef HAVE_CONFIG_H
+#include "../config.h"
+#include "../campaign.h"
+#else
+// defined globally in campaign.h
+// define distance metric, e.g. CAMPAIGN_DISTANCE_MANHATTAN, CAMPAIGN_DISTANCE_EUCLIDEAN_, etc.
+#define CAMPAIGN_DISTANCE_EUCLIDEAN_SQUARED /** < Type of distance metric */
+#define THREADSPERBLOCK 64 /** < Threads per block (tpb) */
+#define FLOAT_TYPE float         /** < Precision of floating point numbers */
 
-#ifndef __GENERATOR_H_
-#define __GENERATOR_H_
+#undef _GLIBCXX_ATOMIC_BUILTINS
+
+#include <iostream>
+#include <cfloat>
+#include "../util/dataio.h"
+#include "../util/timing.h"
+#include "../util/defaults.h"
+#include "../util/metricsGPU.h"
+#include "../util/gpudevices.h"
+#endif
+
+using namespace std;
 
 class Generator {
 	public:
@@ -38,5 +56,3 @@ class Generator {
 		float * pointsContiguous;
 		bool accessContiguousActivated = false;
 };
-
-#endif

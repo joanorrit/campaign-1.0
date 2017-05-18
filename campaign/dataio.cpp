@@ -52,6 +52,9 @@
 #include "defaults.h"
 #include "Generator.h"
 
+#define INTERCALATED_DATA 1
+#define SHARED_MEM 0
+
 using namespace std;
 
 class Internal 
@@ -107,6 +110,20 @@ public:
      */
     int getDimensions() { return D; };
     
+    void setN(int N)
+    {
+	    this->N = N;
+    }
+    
+    void setK(int K)
+    {
+	    this->K = K;
+    }
+
+    void setD(int D)
+    {
+	    this->D = D;
+    }
     /**
      * \brief Get name of executable
      * \return Name of executable
@@ -359,6 +376,42 @@ DataIO::~DataIO()
     delete ip;
 }
 
+float* DataIO::makeData(int n, int k, int d)
+{
+    float* data;
+
+    int N = n;
+    int K = k;
+    int D = d;
+
+    ip->setN(N);
+    ip->setK(K);
+    ip->setD(D);
+
+    cout << "N at dataio:" << ip->getNumElements() << endl;
+    cout << "K at dataio:" << ip->getNumClusters() << endl;
+    cout << "D at dataio:" << ip->getDimensions() << endl;
+    
+    Generator generator;
+
+    generator.setN(N);
+    generator.setK(K);
+    generator.setD(D);
+
+    generator.mallocMemoryForPoints();
+ 
+    generator.generateCenters();
+
+    generator.generateClusters(); 
+
+    generator.generateClustersContiguous();
+
+    //generator.printPoints();
+
+    return generator.getIntercalatePoints();
+    //return generator.getContiguousPoints();
+
+}	
 /** 
  * \brief Read data from file or stdin. 
  * \param fileName Name of data file, if empty quotes ("") read from stdin
@@ -370,52 +423,6 @@ float* DataIO::readData(const char* fileName)
     if (fileName == "") data = ip->readStdIn();
     else data = ip->readFile(fileName);
     return data;
-
-    /*int N = ip->getNumElements(); 
-    int D = ip->getDimensions();
-    Generator generator;*/
-
-    /*float totalPoints = N * D;
-    //float * prova = generator.generateClustersIntercalatedByContiguousPoints(data, N, D);
-    float * prova = generator.generateClustersContiguousByIntercalatedPoints(data, N, D);
-    for (int i = 0; i < totalPoints; i++) {
-	    cout << data[i] << endl;
-    }
-    cout << endl;
-    cout << "-------------------------------------------------------------";
-    cout << endl;
-    for (int i = 0; i < totalPoints; i++) {
-	    cout << prova[i] << endl;
-    }
-    exit(0);*/
-
-    /*float totalPoints = N * D;
-    float * prova = generator.generateClustersIntercalatedByContiguousPoints(data, N, D);
-    for (int i = 0; i < totalPoints; i++) {
-	    cout << prova[i] << endl;
-    }
-    exit(0);*/
-    
-    //return data;
-    //return generator.generateClustersIntercalatedByContiguousPoints(data, N, D);
-  
-    /*Generator generator;
-
-    generator.setN(1000000);
-    generator.setK(10);
-    generator.setD(100);
-
-    generator.mallocMemoryForPoints();
- 
-    generator.generateCenters();
-
-    generator.generateClusters(); 
-
-    generator.generateClustersContiguous();
-	
-    //generator.printPoints();
-
-    return generator.getContiguousPoints();*/
 }
 
 /**
@@ -517,8 +524,11 @@ void DataIO::printClusters(int numData, int numClust, int numDim, float *data, f
                 {
                     // print out vectors
                     cout << "{";
-                    //for (int cnt = 0; cnt < numDim; cnt++) cout << data[numDim * j + cnt] << ((cnt < numDim-1) ? ", " : "");
+#ifdef INTERCALATED_DATA
+                    for (int cnt = 0; cnt < numDim; cnt++) cout << data[numDim * j + cnt] << ((cnt < numDim-1) ? ", " : "");
+#else
                     for (int cnt = 0; cnt < numDim; cnt++) cout << data[cnt*numData + j] << ((cnt < numDim-1) ? ", " : "");
+#endif
                     cout << "}, ";
                     count++;
                 }

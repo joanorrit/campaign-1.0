@@ -49,6 +49,12 @@
 #include "./kcentersGPU.h"
 #endif
 
+#include <time.h>
+
+#define SHARED_MEM 0
+#define INTERCALATED_DATA 1
+
+#include <iostream>
 using namespace std;
 
 
@@ -57,30 +63,106 @@ using namespace std;
  */
 int main(int argc, const char* argv[])
 {
+    clock_t time_ini, time_end;
     // Initialization
     Timing timer;
-    Generator generator;
+    //Generator generator;
     
     // Parse command line
-    Defaults *defaults = new Defaults(argc, argv, "kc");
+    //Defaults *defaults = new Defaults(argc, argv, "kc");
     
     // select device based on command-line switches
-    GpuDevices *systemGpuDevices = new GpuDevices(defaults);
+    //GpuDevices *systemGpuDevices = new GpuDevices(defaults);
     
     // place for data and information about data from datafile
     DataIO* data = new DataIO;
 
     timer.init("kcentersGPU");
-    
+
+    int n = atoi(argv[1]);
+    int k = atoi(argv[2]);
+    int d = atoi(argv[3]);
+
     const int seed = 0;
     data = new DataIO;
-    float* x = data->readData(defaults->getInputFileName().c_str());
+    //float* x = data->readData(defaults->getInputFileName().c_str());
+    float* x = data->makeData(n,k,d);
     /*############# Add this for revert ################*/
     int N = data->getNumElements();
     int K = data->getNumClusters();
     int D = data->getDimensions();
 
-    FLOAT_TYPE* dist = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * N); // cluster means
+    cout << "N,K,D: " << N << "," << K << "," << D << endl;
+    FLOAT_TYPE* dist = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * (N+1024)); // cluster means
+    for (int i = 0; i < N+1024; i++) dist[i] = FLT_MAX;
+    int* centroids = (int*) malloc(sizeof(int) * K);  // centroid indices
+    memset(centroids, 0, sizeof(int) * K);
+    int* assign = (int*) malloc(sizeof(int) * (N+1024));     // assignments
+    memset(assign, seed, sizeof(int) * (N+1024));
+    
+#if 0
+    int MaxN = 4;  
+    int MaxD = 10;  
+    int MaxK = 10;  
+#else
+    int MaxN = 1;  
+    int MaxD = 1;  
+    int MaxK = 1;  
+#endif
+
+#if 1
+    int MaxTPB = 2048;
+    int TPB = 32;
+#else
+    int MaxTPB = 1024;
+    int TPB = 512;
+#endif
+    int copyN=N;
+    int copyK=K;
+    int copyD=D;
+    for (;TPB<MaxTPB; TPB=TPB*2) {
+
+      int tmp = 10;
+      N=copyN;
+      for (int n=0; n<MaxN; n=n+1) {
+        D=copyD;
+        for (int d=0; d<MaxD; d=d+1) {
+          D=copyD-d*10;
+          K=copyK;
+          for (int k=0; k<MaxK; k=k+1) {
+            K=copyK-k*10;
+    
+    timer.start("kcentersGPU");
+
+    time_ini = clock();
+
+    for (int i = 0; i < N; i++) dist[i] = FLT_MAX;
+    memset(centroids, 0, sizeof(int) * K);
+    memset(assign, seed, sizeof(int) * N);
+
+            // do clustering on GPU 
+            //cout << "kcentersGPU: BEGIN (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
+            //timer.reset("kcentersGPU");
+            kcentersGPU(TPB, N, K, D, x, assign, dist, centroids, seed, data);
+
+            //timer.report();
+            //cout << "kcentersGPU: END (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
+
+          } /* K */
+        } /* D */
+        N=N/tmp;
+      } /* N */
+    } /* TPB */
+
+    time_end = clock();
+
+    double secs = (double)(time_end - time_ini) / CLOCKS_PER_SEC;
+    //printf("%.16g milisegundos\n", secs * 1000.0);
+    timer.stop("kcentersGPU");
+    N=copyN; K=copyK; D=copyD;
+    
+
+    /*FLOAT_TYPE* dist = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * N); // cluster means
     for (int i = 0; i < N; i++) dist[i] = FLT_MAX;
     int* centroids = (int*) malloc(sizeof(int) * K);  // centroid indices
     memset(centroids, 0, sizeof(int) * K);
@@ -89,9 +171,9 @@ int main(int argc, const char* argv[])
     
     // do clustering on GPU 
     timer.start("kcentersGPU");
-    kcentersGPU(N, K, D, x, assign, dist, centroids, seed, data);
-    timer.stop("kcentersGPU");
-    
+    kcentersGPU(TPB, N, K, D, x, assign, dist, centroids, seed, data);
+    timer.stop("kcentersGPU");*/
+   /* 
     // print results
     FLOAT_TYPE* ctr = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * K * D); // cluster centers
     // for each centroid
@@ -99,8 +181,11 @@ int main(int argc, const char* argv[])
         // for each dimension
         for (int d = 0; d < D; d++) 
             // collect centroid coordinates
-            //ctr[i * D + d] = x[centroids[i] * D + d];
+#ifdef INTERCALATED_DATA
+            ctr[i * D + d] = x[centroids[i] * D + d];
+#else
             ctr[i * D + d] = x[d * N + centroids[i]];
+#endif
 
     data->printClusters(N, K, D, x, ctr, assign);
     free(ctr); ctr = NULL;

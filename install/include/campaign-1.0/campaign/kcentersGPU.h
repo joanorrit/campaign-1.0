@@ -48,7 +48,7 @@
 // defined globally in campaign.h
 // define distance metric, e.g. CAMPAIGN_DISTANCE_MANHATTAN, CAMPAIGN_DISTANCE_EUCLIDEAN_, etc.
 #define CAMPAIGN_DISTANCE_EUCLIDEAN_SQUARED /** < Type of distance metric */
-#define THREADSPERBLOCK 256 /** < Threads per block (tpb) */
+#define THREADSPERBLOCK 64 /** < Threads per block (tpb) */
 #define FLOAT_TYPE float         /** < Precision of floating point numbers */
 
 #undef _GLIBCXX_ATOMIC_BUILTINS
@@ -97,7 +97,7 @@ __device__ static void parallelMax(int tid, T *s_A, U *s_B);
  * \param MAXID Index of data point furthes away  from its centroid for each block
  * \return Updated values of DIST, ASSIGN, MAXDIST, and MAXID
  **/
-__global__ void checkCentroid_CUDA(int N, int D, int iter, int centroid, FLOAT_TYPE *X, FLOAT_TYPE *CTR, FLOAT_TYPE *DIST, int *ASSIGN, FLOAT_TYPE *MAXDIST, int *MAXID);
+__global__ void checkCentroid_CUDA(int TPB, int N, int D, int iter, int centroid, FLOAT_TYPE *X, FLOAT_TYPE *CTR, FLOAT_TYPE *DIST, int *ASSIGN, FLOAT_TYPE *MAXDIST, int *MAXID);
 
 
 /**
@@ -115,7 +115,7 @@ __global__ void checkCentroid_CUDA(int N, int D, int iter, int centroid, FLOAT_T
  * \param seed Index of first centroid
  * \return Updated values of assign, dist, and centroid indices in centroids
  */ 
-void kcentersGPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *dist, int *centroids, int seed, DataIO *data);
+void kcentersGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *dist, int *centroids, int seed, DataIO *data);
 
 
 

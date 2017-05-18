@@ -73,6 +73,7 @@ public:
     DataIO();
     ~DataIO();
     float* readData(const char* fileName);
+    float* makeData(int n, int k, int d);
     float* getData(); // read data from file or input stream
     const char* getFileName(); // get name of data file
     int getNumElements(); // get number of data points in set
