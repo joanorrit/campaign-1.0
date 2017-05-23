@@ -44,9 +44,20 @@
 
 #include "./kmeansGPU.h"
 
+//#define SHARED_MEM 1
+#define INTERCALATED_DATA 1
+
+#ifdef SHARED_MEM
+#define MEMBARRIER() __syncthreads()
+#define WARPMEMBARRIER()
+#else
+#define MEMBARRIER() {__threadfence();__syncthreads();}
+#define WARPMEMBARRIER() {__threadfence();__syncthreads();}
+#endif
+
 using namespace std;
 
-template <unsigned int BLOCKSIZE, class T>
+/*template <unsigned int BLOCKSIZE, class T>
 __device__ static void reduceOne(int tid, T *s_A)
 {
     if (BLOCKSIZE >= 1024) { if (tid < 512) { s_A[tid] += s_A[tid + 512]; } __syncthreads(); }
@@ -83,14 +94,61 @@ __device__ static void reduceTwo(int tid, T *s_A, U *s_B)
         if (BLOCKSIZE >=  4) { s_A[tid] += s_A[tid +  2]; s_B[tid] += s_B[tid +  2]; }
         if (BLOCKSIZE >=  2) { s_A[tid] += s_A[tid +  1]; s_B[tid] += s_B[tid +  1]; }
     }
+}*/
+//template <unsigned int BLOCKSIZE, class T>
+template <class T>
+__device__ static void reduceOne(int BLOCKSIZE, int tid, T *s_A)
+{
+    if (BLOCKSIZE >= 1024) { if (tid < 512) { s_A[tid] += s_A[tid + 512]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  512) { if (tid < 256) { s_A[tid] += s_A[tid + 256]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  256) { if (tid < 128) { s_A[tid] += s_A[tid + 128]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  128) { if (tid <  64) { s_A[tid] += s_A[tid +  64]; } MEMBARRIER(); }
+    
+    if (tid < 32)
+    {
+        volatile T *vs_A=s_A;
+        if (BLOCKSIZE >= 64) { vs_A[tid] += vs_A[tid + 32]; }
+        if (BLOCKSIZE >= 32) { vs_A[tid] += vs_A[tid + 16]; }
+        if (BLOCKSIZE >= 16) { vs_A[tid] += vs_A[tid +  8]; }
+        if (BLOCKSIZE >=  8) { vs_A[tid] += vs_A[tid +  4]; }
+        if (BLOCKSIZE >=  4) { vs_A[tid] += vs_A[tid +  2]; }
+        if (BLOCKSIZE >=  2) { vs_A[tid] += vs_A[tid +  1]; }
+    }
 }
 
 
-__global__ static void assignToClusters_KMCUDA(int N, int K, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN)
+//template <unsigned int BLOCKSIZE, class T, class U>
+template <class T, class U>
+__device__ static void reduceTwo(int BLOCKSIZE, int tid, T *s_A, U *s_B)
 {
+    if (BLOCKSIZE >= 1024) { if (tid < 512) { s_A[tid] += s_A[tid + 512]; s_B[tid] += s_B[tid + 512]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  512) { if (tid < 256) { s_A[tid] += s_A[tid + 256]; s_B[tid] += s_B[tid + 256]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  256) { if (tid < 128) { s_A[tid] += s_A[tid + 128]; s_B[tid] += s_B[tid + 128]; } MEMBARRIER(); }
+    if (BLOCKSIZE >=  128) { if (tid <  64) { s_A[tid] += s_A[tid +  64]; s_B[tid] += s_B[tid +  64]; } MEMBARRIER(); }
+    
+    if (tid < 32)
+    {
+        volatile T *vs_A=s_A;
+        volatile U *vs_B=s_B;
+        if (BLOCKSIZE >= 64) { vs_A[tid] += vs_A[tid + 32]; vs_B[tid] += vs_B[tid + 32]; }
+        if (BLOCKSIZE >= 32) { vs_A[tid] += vs_A[tid + 16]; vs_B[tid] += vs_B[tid + 16]; }
+        if (BLOCKSIZE >= 16) { vs_A[tid] += vs_A[tid +  8]; vs_B[tid] += vs_B[tid +  8]; }
+        if (BLOCKSIZE >=  8) { vs_A[tid] += vs_A[tid +  4]; vs_B[tid] += vs_B[tid +  4]; }
+        if (BLOCKSIZE >=  4) { vs_A[tid] += vs_A[tid +  2]; vs_B[tid] += vs_B[tid +  2]; }
+        if (BLOCKSIZE >=  2) { vs_A[tid] += vs_A[tid +  1]; vs_B[tid] += vs_B[tid +  1]; }
+    }
+}
+
+
+__global__ static void assignToClusters_KMCUDA(int TPB, int N, int K, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN)
+{
+#ifdef SHARED_MEM
     extern __shared__ FLOAT_TYPE array[];                        // shared memory
     FLOAT_TYPE *s_center = (FLOAT_TYPE*) array;                       // tpb centroid components
-    
+#else
+    extern __shared__ FLOAT_TYPE array[];                        // shared memory
+    FLOAT_TYPE *s_center = CTR;
+#endif 
     unsigned int t = blockDim.x * blockIdx.x + threadIdx.x; // global thread ID
     unsigned int tid = threadIdx.x;                         // thread ID in block
     
@@ -109,17 +167,28 @@ __global__ static void assignToClusters_KMCUDA(int N, int K, int D, FLOAT_TYPE *
             while (offsetD < D)
             {
                 // read up to tpb dimensions of centroid K (coalesced)
+#ifdef SHARED_MEM
                 if (offsetD + tid < D) s_center[tid] = CTR[k * D + offsetD + tid];
-                __syncthreads();
+                //__syncthreads();
+		MEMBARRIER();
+#endif
                 // for each of the following tpb (or D - offsetD) dimensions
                 for (unsigned int d = offsetD; d < min(offsetD + blockDim.x, D); d++)
                 {
                     // broadcast centroid position and compute distance to data
                     // point along dimension; reading of X is coalesced
-                    dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + t));
+#ifdef SHARED_MEM
+                    //dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + t));
+                    dist += distanceComponentGPU(s_center + (d - offsetD), X + t*D + d);
+
+#else
+                    //dist += distanceComponentGPU(s_center + (k*D + d), X + (d * N + t));
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + t*D +d);
+#endif
+
                 }
                 offsetD += blockDim.x;
-                __syncthreads();
+                MEMBARRIER();//__syncthreads();
             }
             dist = distanceFinalizeGPU<FLOAT_TYPE>(1, &dist);
             // if distance to centroid smaller than previous best, reassign
@@ -135,12 +204,18 @@ __global__ static void assignToClusters_KMCUDA(int N, int K, int D, FLOAT_TYPE *
 }
 
 
-__global__ static void calcScore_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN, FLOAT_TYPE *SCORE)
+__global__ static void calcScore_CUDA(int TPB, int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN, FLOAT_TYPE *SCORE, FLOAT_TYPE *BSCORE)
 {
+#ifdef SHARED_MEM
     extern __shared__ FLOAT_TYPE array[];                     // shared memory
     FLOAT_TYPE *s_scores = (FLOAT_TYPE*) array;                    // tpb partial scores
     FLOAT_TYPE *s_center = (FLOAT_TYPE*) &s_scores[blockDim.x];    // up to tpb centroid components
-    
+#else
+    extern __shared__ FLOAT_TYPE array[];                     // shared memory
+    FLOAT_TYPE *s_center = CTR;    // up to tpb centroid components
+    FLOAT_TYPE *s_scores = &BSCORE[blockIdx.x*TPB];
+#endif
+
     int k   = blockIdx.x;                                // cluster ID
     int tid = threadIdx.x;                               // in-block thread ID
     
@@ -156,39 +231,56 @@ __global__ static void calcScore_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *C
         while (offsetD < D)
         {
             // at each iteration read up to tpb centroid components from global mem (coalesced)
+#ifdef SHARED_MEM
             if (offsetD + tid < D) s_center[tid] = CTR[k * D + offsetD + tid];
-            __syncthreads();
+            MEMBARRIER();//__syncthreads();
+#endif
             // thread divergence likely
             if (ASSIGN[offsetN] == k)
             {
                 // for each of the following tpb (or D - offsetD) dimensions
                 for (unsigned int d = offsetD; d < min(offsetD + blockDim.x, D); d++)
                 {
-                    // broadcast centroid component and compute contribution to distance to data point
-                    dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + offsetN));
+                    // broadcast centroid component and compute contribution to distance to data poi
+
+                    //dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + offsetN));
+                    //dist += distanceComponentGPU(s_center + (d - offsetD), X + (offsetN) * D + d);
+#ifdef SHARED_MEM
+                    //dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + offsetN));
+                    dist += distanceComponentGPU(s_center + (d - offsetD), X + (offsetN) * D + d);
+#else
+                    //dist += distanceComponentGPU(s_center + (k*D + d), X + (d * N + offsetN));
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + offsetN*D +d);
+#endif
+
                 }
             }
             offsetD += blockDim.x;
-            __syncthreads();
+            MEMBARRIER();//__syncthreads();
         }
         // update partial score
         s_scores[tid] += distanceFinalizeGPU(1, &dist);
         offsetN += blockDim.x;
     }
-    __syncthreads();
+    MEMBARRIER();//__syncthreads();
     // compute score for block by reducing over threads
-    reduceOne<THREADSPERBLOCK>(tid, s_scores);
+   reduceOne(TPB, tid, s_scores);
     if (tid == 0) SCORE[k] = s_scores[tid];
 }
 
 
 
-__global__ static void calcCentroids_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN)
+__global__ static void calcCentroids_CUDA(int TPB, int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN, FLOAT_TYPE *TMP1, int *TMP2)
 {
+#ifdef SHARED_MEM
     extern __shared__ FLOAT_TYPE array[];                            // shared memory
     int   *s_numElements = (int*)   array;                      // tpb partial sums of elements in cluster
-    FLOAT_TYPE *s_centerParts = (FLOAT_TYPE*) &s_numElements[blockDim.x]; // tpb partial centroid components
-    
+    FLOAT_TYPE *s_centerParts = (FLOAT_TYPE*) &s_numElements[blockDim.x]; // tpb partial centroid components    
+#else
+    FLOAT_TYPE   *s_centerParts = &TMP1[blockIdx.x*TPB];       
+    int *s_numElements = &TMP2[blockIdx.x*TPB]; 
+#endif
+
     int k   = blockIdx.x;                                       // cluster ID
     int tid = threadIdx.x;                                      // in-block thread ID
     
@@ -209,28 +301,32 @@ __global__ static void calcCentroids_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYP
             if (ASSIGN[offset] == k)
             {
                 // update centroid parts
-                s_centerParts[tid] += X[d * N + offset];
+                //s_centerParts[tid] += X[d * N + offset];
+                s_centerParts[tid] += X[offset*D + d];
+
                 // increment number of elements in cluster
                 if (d == 0) s_numElements[tid]++;
             }
             // move on to next segment
             offset += blockDim.x;
         }
-        __syncthreads();
+        MEMBARRIER();//__syncthreads();
         
         // take sum over all tpb array elements
         // reduce number of cluster elements only once
         if (d == 0)
         {
             // reduce number of elements and centroid parts
-            reduceTwo<THREADSPERBLOCK>(tid, s_centerParts, s_numElements);
+            //reduceTwo<THREADSPERBLOCK>(tid, s_centerParts, s_numElements);
+            reduceTwo(TPB, tid, s_centerParts, s_numElements);
             if (tid == 0) clusterSize = (FLOAT_TYPE) s_numElements[tid];
             // note: if clusterSize == 0 we can return here
         }
         else
         {
             // reduce centroid parts
-            reduceOne<THREADSPERBLOCK>(tid, s_centerParts);
+            //reduceOne<THREADSPERBLOCK>(tid, s_centerParts);
+            reduceOne(TPB, tid, s_centerParts);
         }
         // write result to global mem (non-coalesced)
         // could replace this by coalesced writes followed by matrix transposition
@@ -239,15 +335,23 @@ __global__ static void calcCentroids_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYP
 }
 
 
-FLOAT_TYPE kmeansGPU(int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ctr, int *assign, unsigned int maxIter, DataIO *data)
+FLOAT_TYPE kmeansGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ctr, int *assign, unsigned int maxIter, DataIO *data)
 {
     // CUDA kernel parameters
-    dim3 block(THREADSPERBLOCK);
+    /*dim3 block(THREADSPERBLOCK);
     dim3 gridK(K);
     dim3 gridN((int) ceil((FLOAT_TYPE) N / (FLOAT_TYPE) THREADSPERBLOCK));
     int sMemAssign  = (sizeof(FLOAT_TYPE) *     THREADSPERBLOCK);
     int sMemScore   = (sizeof(FLOAT_TYPE) * 2 * THREADSPERBLOCK);
-    int sMemCenters = (sizeof(FLOAT_TYPE) *     THREADSPERBLOCK + sizeof(int) * THREADSPERBLOCK);
+    int sMemCenters = (sizeof(FLOAT_TYPE) *     THREADSPERBLOCK + sizeof(int) * THREADSPERBLOCK);*/
+    // CUDA kernel parameters
+    dim3 block(TPB);
+    dim3 gridK(K);
+    int  NB =  ( int ) ceil((FLOAT_TYPE) N / (FLOAT_TYPE) TPB);
+    dim3 gridN(NB);
+    int sMemAssign  = (sizeof(FLOAT_TYPE) *     TPB);
+    int sMemScore   = (sizeof(FLOAT_TYPE) * 2 * TPB);
+    int sMemCenters = (sizeof(FLOAT_TYPE) *     TPB + sizeof(int) * TPB);
     
     // GPU memory pointers, allocate and initialize device memory
     FLOAT_TYPE *x_d         = data->allocDeviceMemory<FLOAT_TYPE*>      (sizeof(FLOAT_TYPE) * N * D, x);
@@ -255,6 +359,10 @@ FLOAT_TYPE kmeansGPU(int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ctr, int *a
     int *assign_d      = data->allocDeviceMemory<int*>        (sizeof(int) * N);
     FLOAT_TYPE *s_d         = data->allocZeroedDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * K);
     
+    FLOAT_TYPE *tmp_d         = data->allocZeroedDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) *TPB*K*2);
+    FLOAT_TYPE *coord_d         = data->allocZeroedDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) *NB*D);
+    int *count_d         = data->allocZeroedDeviceMemory<int*>(sizeof(int) *K);
+
     // Initialize host memory
     FLOAT_TYPE *s   = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * K);
     
@@ -263,24 +371,25 @@ FLOAT_TYPE kmeansGPU(int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ctr, int *a
     if (maxIter < 1) maxIter = INT_MAX;
     unsigned int iter = 0;
     // loop until defined number of iterations reached or converged
-    while (iter < maxIter && ((score - oldscore) * (score - oldscore)) > EPS)
+    //while (iter < maxIter && ((score - oldscore) * (score - oldscore)) > EPS)
+    while (iter < maxIter)
     {
         oldscore = score;
         
         // skip at first iteration and use provided centroids instead
         if (iter > 0)
         {
-            calcCentroids_CUDA<<<gridK, block, sMemCenters>>>(N, D, x_d, ctr_d, assign_d);
+            calcCentroids_CUDA<<<gridK, block, sMemCenters>>>(TPB, N, D, x_d, ctr_d, assign_d, tmp_d, (int*)(tmp_d + TPB*K));
             CUT_CHECK_ERROR("calcCentroids_CUDA() kernel execution failed");
         }
         iter++;
         
         // update clusters and create backup of current cluster centers
-        assignToClusters_KMCUDA<<<gridN, block, sMemAssign>>>(N, K, D, x_d, ctr_d, assign_d);
+        assignToClusters_KMCUDA<<<gridN, block, sMemAssign>>>(TPB, N, K, D, x_d, ctr_d, assign_d);
         CUT_CHECK_ERROR("assignToClusters_KMCUDA() kernel execution failed");
         
         // get score per cluster for unsorted data
-        calcScore_CUDA<<<gridK, block, sMemScore>>>(N, D, x_d, ctr_d, assign_d, s_d);
+        calcScore_CUDA<<<gridK, block, sMemScore>>>(TPB, N, D, x_d, ctr_d, assign_d, s_d, tmp_d);
         CUT_CHECK_ERROR("calcScore_CUDA() kernel execution failed");
         
         // copy scores per cluster back to the host and do reduction on CPU

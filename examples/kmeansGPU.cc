@@ -47,6 +47,9 @@
 #else
 #include "./kmeansGPU.h"
 #endif
+
+//#define SHARED_MEM 1
+#define INTERCALATED_MEM 1
 using namespace std;
 
 
@@ -81,7 +84,7 @@ int main(int argc, const char* argv[])
     
     // initialize first centroids with first K data points  
     // for each cluster
-    for (unsigned int k = 0; k < K; k++)
+    /*for (unsigned int k = 0; k < K; k++)
     {
         // for each dimension
         for (unsigned int d = 0; d < D; d++)
@@ -94,7 +97,70 @@ int main(int argc, const char* argv[])
     // do clustering on GPU 
     timer.start("kmeansGPU");
     score = kmeansGPU(N, K, D, x, ctr, assign, (unsigned int)0, data);
+    timer.stop("kmeansGPU");*/
+#if 0
+    int MaxN = 4;  
+    int MaxD = 10;  
+    int MaxK = 10;  
+#else
+    int MaxN = 1;
+    int MaxD = 1;
+    int MaxK = 1;
+#endif
+
+#if 1
+    int MaxTPB = 2048;
+    int TPB = 64;
+#else
+    int MaxTPB = 1024;
+    int TPB = 512;
+#endif
+    int copyN=N;
+    int copyK=K;
+    int copyD=D;
+    for (;TPB<MaxTPB; TPB=TPB*2) {
+
+      int tmp = 10;
+      N=copyN;
+      for (int n=0; n<MaxN; n=n+1) {
+        D=copyD;
+        for (int d=0; d<MaxD; d=d+1) {
+          D=copyD-d*10;
+          K=copyK;
+          for (int k=0; k<MaxK; k=k+1) {
+            K=copyK-k*10;
+
+
+    // initialize first centroids with first K data points  
+    // for each cluster
+    for (unsigned int k = 0; k < K; k++)
+    {
+        // for each dimension
+        for (unsigned int d = 0; d < D; d++)
+        {
+            
+            //ctr[k * D + d] = x[d * N + k];
+	    ctr[k * D + d] = x[k * D + d];
+        }
+    }
+    
+    cout << "kmeansGPU: BEGIN GPU (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
+    // do clustering on GPU 
+    timer.reset("kmeansGPU");
+    timer.start("kmeansGPU");
+    score = kmeansGPU(TPB, N, K, D, x, ctr, assign, (unsigned int)10, data);
     timer.stop("kmeansGPU");
+    
+    timer.report();
+    cout << "kmeansGPU: END GPU (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
+
+          } /* K */
+        } /* D */
+        N=N/tmp;
+      } /* N */
+    } /* TPB */
+    N=copyN; K=copyK; D=copyD;
+
     
     // print results
     data->printClusters(N, K, D, x, ctr, assign);  

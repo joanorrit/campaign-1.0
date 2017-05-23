@@ -45,7 +45,7 @@
 #include "timing.h"
 #include <iostream>
 
-#define SHARED_MEM 0
+#define SHARED_MEM 1
 #define INTERCALATED_DATA 1
 
 #ifdef SHARED_MEM
@@ -182,7 +182,6 @@ unsigned int t   = blockIdx.x * blockDim.x + tid; // global thread ID
     MEMBARRIER();
     // find max distance of data point to centroid and its index in block
     //parallelMax<THREADSPERBLOCK>(tid, s_dist, s_ID);
-
     parallelMax(TPB, tid, s_dist, s_ID);
     MEMBARRIER();
     // write maximum distance and index to global mem
@@ -200,6 +199,8 @@ unsigned int t   = blockIdx.x * blockDim.x + tid; // global thread ID
         DIST[t] = origDist;
         ASSIGN[t] = origAssign;
 #endif
+
+
     }
 }
 
@@ -224,6 +225,10 @@ cout << "2D grid: " << sqrt(numBlock) + 1 << endl;
     Timing timer;
 
     timer.init("kcenterGPU kernel");
+    timer.init("allocate memory");
+    timer.init("copyMem hostToDevice");
+    timer.init("copyMem DeviceToHost");
+    timer.init("Reduction");
  
     // GPU memory pointers, allocate and initialize device memory
     /*FLOAT_TYPE *dist_d         = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * N, dist);
@@ -233,6 +238,7 @@ cout << "2D grid: " << sqrt(numBlock) + 1 << endl;
     FLOAT_TYPE *maxDistBlock_d = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * numBlock);
     int   *maxIdBlock_d   = data->allocDeviceMemory<int*>  (sizeof(int)   * numBlock);*/
 
+    timer.start("allocate memory");
     int NMAX = N + ( ((N%TPB)==0) ? 0 : TPB-(N%TPB) ); // for non shared memory reductions 
     FLOAT_TYPE *dist_d         = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * NMAX, dist);
     int   *assign_d       = data->allocDeviceMemory<int*>  (sizeof(int)   * NMAX);
@@ -240,7 +246,8 @@ cout << "2D grid: " << sqrt(numBlock) + 1 << endl;
     FLOAT_TYPE *ctr_d          = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * D);
     FLOAT_TYPE *maxDistBlock_d = data->allocDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) * numBlock);
     int   *maxIdBlock_d   = data->allocDeviceMemory<int*>  (sizeof(int)   * numBlock);
-    
+    timer.stop("allocate memory");
+
     // Initialize host memory
     FLOAT_TYPE *maxDistBlock = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * numBlock);
     int   *maxID        = (int*)   malloc(sizeof(int));
@@ -256,7 +263,9 @@ cout << "2D grid: " << sqrt(numBlock) + 1 << endl;
 #else
         for (int d = 0; d < D; d++) ctr[d] = x[d * N + centroid];
 #endif
+	timer.start("copyMem HostToDevice");
         cudaMemcpy(ctr_d, ctr, sizeof(FLOAT_TYPE) * D, cudaMemcpyHostToDevice);      
+	timer.stop("copyMem HostToDevice");
         centroids[k] = centroid; 
 
         // for each data point, check if new centroid closer than previous best and if, reassign
@@ -267,16 +276,27 @@ cout << "2D grid: " << sqrt(numBlock) + 1 << endl;
         
         // get next max distance between data point and centroid
         int tempMax = 0;
+
+	timer.start("copyMem DeviceToHost");
         cudaMemcpy(maxDistBlock, maxDistBlock_d, sizeof(FLOAT_TYPE) * numBlock, cudaMemcpyDeviceToHost);        
+	timer.stop("copyMem HostToDevice");
+
+	timer.start("Reduction");
         for (int i = 1; i < numBlock; i++) 
         {
             if (maxDistBlock[i] > maxDistBlock[tempMax]) tempMax = i;
         }
+	timer.stop("Reduction");	
+
+	timer.start("copyMem DeviceToHost");
         cudaMemcpy(maxID, maxIdBlock_d + tempMax, sizeof(int), cudaMemcpyDeviceToHost);
+	timer.stop("copyMem DeviceToHost");
         centroid = maxID[0];
     }
     // copy final assignments back to host
+    timer.start("copyMem DeviceToHost");
     cudaMemcpy(assign, assign_d, sizeof(int) * N, cudaMemcpyDeviceToHost);
+    timer.stop("copyMem DeviceToHost");
     
     // free up memory
     cudaFree(dist_d);
@@ -288,7 +308,11 @@ cout << "2D grid: " << sqrt(numBlock) + 1 << endl;
     free(maxDistBlock);
     free(maxID);
     free(ctr);
-    timer.report();
+    timer.report("kcenterGPU kernel");
+    timer.report("allocate memory");
+    timer.report("copyMem hostToDevice");
+    timer.report("copyMem DeviceToHost");
+    timer.report("Reduction");
 }
 
 

@@ -51,7 +51,7 @@
 
 #include <time.h>
 
-#define SHARED_MEM 0
+#define SHARED_MEM 1
 #define INTERCALATED_DATA 1
 
 #include <iostream>
@@ -120,6 +120,9 @@ int main(int argc, const char* argv[])
     int copyN=N;
     int copyK=K;
     int copyD=D;
+
+    timer.start("kcentersGPU");
+
     for (;TPB<MaxTPB; TPB=TPB*2) {
 
       int tmp = 10;
@@ -132,9 +135,7 @@ int main(int argc, const char* argv[])
           for (int k=0; k<MaxK; k=k+1) {
             K=copyK-k*10;
     
-    timer.start("kcentersGPU");
-
-    time_ini = clock();
+    //time_ini = clock();
 
     for (int i = 0; i < N; i++) dist[i] = FLT_MAX;
     memset(centroids, 0, sizeof(int) * K);
@@ -154,9 +155,9 @@ int main(int argc, const char* argv[])
       } /* N */
     } /* TPB */
 
-    time_end = clock();
+    //time_end = clock();
 
-    double secs = (double)(time_end - time_ini) / CLOCKS_PER_SEC;
+    //double secs = (double)(time_end - time_ini) / CLOCKS_PER_SEC;
     //printf("%.16g milisegundos\n", secs * 1000.0);
     timer.stop("kcentersGPU");
     N=copyN; K=copyK; D=copyD;
@@ -191,7 +192,7 @@ int main(int argc, const char* argv[])
     free(ctr); ctr = NULL;
    // if (data->doPrintTime()) timer.report(); 
    // if (defaults->getTimerOutput() == true) timer.report();*/
-   timer.report();
+   timer.report("kcentersGPU");
     
     // free memory
     free(x);

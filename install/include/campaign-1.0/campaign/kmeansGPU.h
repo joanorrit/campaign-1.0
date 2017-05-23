@@ -120,7 +120,7 @@ __global__ static void assignToClusters_KMCUDA(int N, int K, int D, FLOAT_TYPE *
  * \param SCORE Array to store score components for each block
  * \return Updated values of SCORE
  */
-__global__ static void calcScore_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN, FLOAT_TYPE *SCORE);
+__global__ static void calcScore_CUDA(int TPB, int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN, FLOAT_TYPE *SCORE);
 
 
 /**
@@ -134,7 +134,7 @@ __global__ static void calcScore_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *C
  * \param ASSIGN Assignments of data points to clusters
  * \return Updated values of CTR
  */
-__global__ static void calcCentroids_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN);
+__global__ static void calcCentroids_CUDA(int TPB, int N, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN);
 
 
 /**
@@ -150,4 +150,4 @@ __global__ static void calcCentroids_CUDA(int N, int D, FLOAT_TYPE *X, FLOAT_TYP
  * \param data pointer to DataIO object containing data to be clustered
  * \return Score for clustering after convergence and updated values of ctr and assign
  */
-FLOAT_TYPE kmeansGPU(int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ctr, int *assign, unsigned int maxIter, DataIO *data);
+FLOAT_TYPE kmeansGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ctr, int *assign, unsigned int maxIter, DataIO *data);
