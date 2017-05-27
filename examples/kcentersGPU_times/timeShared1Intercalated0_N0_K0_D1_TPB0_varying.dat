@@ -1,0 +1,141 @@
+Fent punts per N, K i D: 1000000 100 200
+N at dataio:1000000
+K at dataio:100
+D at dataio:200
+HOLA
+N,K,D: 1000000,100,200
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 200 512
+kcenterGPU kernel = 287.253 ms
+allocate memory = 115.204 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.86448 ms
+Reduction = 1.32736 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 200 512
+kcentersGPU = 412.417 ms
+Fent punts per N, K i D: 1000000 100 180
+N at dataio:1000000
+K at dataio:100
+D at dataio:180
+HOLA
+N,K,D: 1000000,100,180
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 180 512
+kcenterGPU kernel = 259.431 ms
+allocate memory = 105.22 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 2.27088 ms
+Reduction = 2.28672 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 180 512
+kcentersGPU = 378.551 ms
+Fent punts per N, K i D: 1000000 100 160
+N at dataio:1000000
+K at dataio:100
+D at dataio:160
+HOLA
+N,K,D: 1000000,100,160
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 160 512
+kcenterGPU kernel = 230.341 ms
+allocate memory = 93.9963 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.84365 ms
+Reduction = 1.33152 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 160 512
+kcentersGPU = 333.815 ms
+Fent punts per N, K i D: 1000000 100 140
+N at dataio:1000000
+K at dataio:100
+D at dataio:140
+HOLA
+N,K,D: 1000000,100,140
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 140 512
+kcenterGPU kernel = 202.407 ms
+allocate memory = 82.5344 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.84157 ms
+Reduction = 1.34317 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 140 512
+kcentersGPU = 294.474 ms
+Fent punts per N, K i D: 1000000 100 120
+N at dataio:1000000
+K at dataio:100
+D at dataio:120
+HOLA
+N,K,D: 1000000,100,120
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 120 512
+kcenterGPU kernel = 174.395 ms
+allocate memory = 70.8596 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.87206 ms
+Reduction = 1.34227 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 120 512
+kcentersGPU = 254.744 ms
+Fent punts per N, K i D: 1000000 100 100
+N at dataio:1000000
+K at dataio:100
+D at dataio:100
+HOLA
+N,K,D: 1000000,100,100
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 100 512
+kcenterGPU kernel = 146.354 ms
+allocate memory = 60.2991 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.8407 ms
+Reduction = 1.32608 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 100 512
+kcentersGPU = 215.634 ms
+Fent punts per N, K i D: 1000000 100 80
+N at dataio:1000000
+K at dataio:100
+D at dataio:80
+HOLA
+N,K,D: 1000000,100,80
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 80 512
+kcenterGPU kernel = 118.671 ms
+allocate memory = 48.195 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.83773 ms
+Reduction = 1.3223 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 80 512
+kcentersGPU = 175.665 ms
+Fent punts per N, K i D: 1000000 100 60
+N at dataio:1000000
+K at dataio:100
+D at dataio:60
+HOLA
+N,K,D: 1000000,100,60
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 60 512
+kcenterGPU kernel = 91.0598 ms
+allocate memory = 37.1724 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.8599 ms
+Reduction = 1.34646 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 60 512
+kcentersGPU = 137.058 ms
+Fent punts per N, K i D: 1000000 100 40
+N at dataio:1000000
+K at dataio:100
+D at dataio:40
+HOLA
+N,K,D: 1000000,100,40
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 40 512
+kcenterGPU kernel = 63.2833 ms
+allocate memory = 25.6109 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.83699 ms
+Reduction = 1.32019 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 40 512
+kcentersGPU = 97.4963 ms
+Fent punts per N, K i D: 1000000 100 20
+N at dataio:1000000
+K at dataio:100
+D at dataio:20
+HOLA
+N,K,D: 1000000,100,20
+Punts fetskcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 20 512
+kcenterGPU kernel = 35.6296 ms
+allocate memory = 14.2917 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.83837 ms
+Reduction = 1.32182 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 20 512
+kcentersGPU = 58.4023 ms
+Done clustering

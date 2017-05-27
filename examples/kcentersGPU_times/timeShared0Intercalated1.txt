@@ -1,0 +1,14 @@
+N,K,D: 1000000,100,200
+Fent punts per N, K i D: 1000000 100 200
+N at dataio:1000000
+K at dataio:100
+D at dataio:200
+kcentersGPU: BEGIN (N, K, D, TPB) 1000000 100 200 512
+kcenterGPU kernel = 2433 ms
+allocate memory = 115.675 ms
+copyMem hostToDevice = 0 ms
+copyMem DeviceToHost = 1.8912 ms
+Reduction = 1.33843 ms
+kcentersGPU: END (N, K, D, TPB) 1000000 100 200 512
+kcentersGPU = 2557.82 ms
+Done clustering
