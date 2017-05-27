@@ -48,8 +48,8 @@
 #include "./kmeansGPU.h"
 #endif
 
-//#define SHARED_MEM 1
-#define INTERCALATED_MEM 1
+#define SHARED_MEM 1
+//#define INTERCALATED_DATA 1
 using namespace std;
 
 
@@ -60,27 +60,40 @@ int main(int argc, const char* argv[])
 {
     // Initialization
     Timing timer;
-    
+#if 0  
     // Parse command line
     Defaults *defaults = new Defaults(argc, argv, "km");
     
     // select CUDA device based on command-line switches
     GpuDevices *systemGpuDevices = new GpuDevices(defaults);
-    
+#endif
     // get data and information about data from datafile
+    int n = atoi(argv[1]);
+    int k = atoi(argv[2]);
+    int d = atoi(argv[3]);
+
+    const int seed = 0;
     DataIO* data = new DataIO;
+
+    timer.init("kmeansGPU");
     
     FLOAT_TYPE score = 0.0f;
-    FLOAT_TYPE* x = data->readData(defaults->getInputFileName().c_str()); // data points
-    int N = data->getNumElements();
+    //FLOAT_TYPE* x = data->readData(defaults->getInputFileName().c_str()); // data point 
+    //float* x = data->makeData(n,k,d);
+    
+    /*int N = data->getNumElements();
     int K = data->getNumClusters();
-    int D = data->getDimensions();
+    int D = data->getDimensions();*/
+
+    int N = n;
+    int K = k;
+    int D = d;
     
     
-    FLOAT_TYPE* ctr = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * K * D); // array containing centroids
+    /*FLOAT_TYPE* ctr = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * K * D); // array containing centroids
     memset(ctr, 0, sizeof(FLOAT_TYPE) * K * D);
     int* assign = (int*) malloc(sizeof(int) * N); // assignments
-    memset(assign, 0, sizeof(int) * N);
+    memset(assign, 0, sizeof(int) * N);*/
     
     // initialize first centroids with first K data points  
     // for each cluster
@@ -109,8 +122,8 @@ int main(int argc, const char* argv[])
 #endif
 
 #if 1
-    int MaxTPB = 2048;
-    int TPB = 64;
+    int MaxTPB = 512;
+    int TPB = 512;
 #else
     int MaxTPB = 1024;
     int TPB = 512;
@@ -118,18 +131,28 @@ int main(int argc, const char* argv[])
     int copyN=N;
     int copyK=K;
     int copyD=D;
-    for (;TPB<MaxTPB; TPB=TPB*2) {
+    
+    float *x;
+    //timer.start("kmeansGPU");
+    for (;TPB<=MaxTPB; TPB=TPB*2) {
 
-      int tmp = 10;
+      //int tmp = 10;
       N=copyN;
       for (int n=0; n<MaxN; n=n+1) {
         D=copyD;
-        for (int d=0; d<MaxD; d=d+1) {
-          D=copyD-d*10;
+        for (int di=0; di<MaxD; di=di+1) {
+          D=copyD-di*10*2;
           K=copyK;
-          for (int k=0; k<MaxK; k=k+1) {
-            K=copyK-k*10;
+          for (int ki=0; ki<MaxK; ki=ki+1) {
+            K=copyK-ki*10;
 
+    cout << "Fent punts per N, K i D: " << N << " " << K << " " << D << endl;
+    x = data->makeData(N,K,D);
+
+    FLOAT_TYPE* ctr = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * K * D); // array containing centroids
+    memset(ctr, 0, sizeof(FLOAT_TYPE) * K * D);
+    int* assign = (int*) malloc(sizeof(int) * N); // assignments
+    memset(assign, 0, sizeof(int) * N);
 
     // initialize first centroids with first K data points  
     // for each cluster
@@ -138,40 +161,46 @@ int main(int argc, const char* argv[])
         // for each dimension
         for (unsigned int d = 0; d < D; d++)
         {
-            
-            //ctr[k * D + d] = x[d * N + k];
+#ifdef INTERCALATED_DATA
 	    ctr[k * D + d] = x[k * D + d];
+#else    
+            ctr[k * D + d] = x[d * N + k];
+#endif
         }
     }
     
-    cout << "kmeansGPU: BEGIN GPU (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
+    cout << "kmeansGPU: BEGIN GPU (N, K, D, TPB) " << N << " " << K << " " << D << " " << TPB << endl;
     // do clustering on GPU 
     timer.reset("kmeansGPU");
     timer.start("kmeansGPU");
     score = kmeansGPU(TPB, N, K, D, x, ctr, assign, (unsigned int)10, data);
     timer.stop("kmeansGPU");
     
-    timer.report();
-    cout << "kmeansGPU: END GPU (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
+    //timer.report();
+    cout << "kmeansGPU: END GPU (N, K, D, TPB) " << N << " " << K << " " << D << " " << TPB << endl;
+    timer.report("kmeansGPU"); 
 
-          } /* K */
-        } /* D */
-        N=N/tmp;
-      } /* N */
-    } /* TPB */
-    N=copyN; K=copyK; D=copyD;
-
-    
-    // print results
-    data->printClusters(N, K, D, x, ctr, assign);  
-    cout << "Score: " << score << endl;
-    if (defaults->getTimerOutput() == true) timer.report();
-    
     // free memory
     free(x);
     free(ctr);
     free(assign);
-    
+          } /* K */
+        } /* D */
+        //N=N/tmp;
+	N /= 10;
+      } /* N */
+    } /* TPB */
+    //timer.stop("kmeansGPU");
+    N=copyN; K=copyK; D=copyD;
+
+#if 0
+    // print results
+    data->printClusters(N, K, D, x, ctr, assign);  
+    cout << "Score: " << score << endl;
+    if (defaults->getTimerOutput() == true) timer.report();
+#endif
+  	
+    //////////////timer.report("kmeansGPU"); 
     // done
     cout << "Done clustering" << endl;
     

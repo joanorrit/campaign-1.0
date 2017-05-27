@@ -52,7 +52,7 @@
 #include <time.h>
 
 #define SHARED_MEM 1
-#define INTERCALATED_DATA 1
+//#define INTERCALATED_DATA 1
 
 #include <iostream>
 using namespace std;
@@ -86,19 +86,23 @@ int main(int argc, const char* argv[])
     const int seed = 0;
     data = new DataIO;
     //float* x = data->readData(defaults->getInputFileName().c_str());
-    float* x = data->makeData(n,k,d);
-    /*############# Add this for revert ################*/
-    int N = data->getNumElements();
-    int K = data->getNumClusters();
-    int D = data->getDimensions();
+    //float* x = data->makeData(n,k,d);
 
-    cout << "N,K,D: " << N << "," << K << "," << D << endl;
+    /*int N = data->getNumElements();
+    int K = data->getNumClusters();
+    int D = data->getDimensions();*/
+
+    int N = n;
+    int K = k;
+    int D = d;
+
+    /*cout << "N,K,D: " << N << "," << K << "," << D << endl;
     FLOAT_TYPE* dist = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * (N+1024)); // cluster means
     for (int i = 0; i < N+1024; i++) dist[i] = FLT_MAX;
     int* centroids = (int*) malloc(sizeof(int) * K);  // centroid indices
     memset(centroids, 0, sizeof(int) * K);
     int* assign = (int*) malloc(sizeof(int) * (N+1024));     // assignments
-    memset(assign, seed, sizeof(int) * (N+1024));
+    memset(assign, seed, sizeof(int) * (N+1024));*/
     
 #if 0
     int MaxN = 4;  
@@ -112,7 +116,7 @@ int main(int argc, const char* argv[])
 
 #if 1
     int MaxTPB = 2048;
-    int TPB = 32;
+    int TPB = 64;
 #else
     int MaxTPB = 1024;
     int TPB = 512;
@@ -121,20 +125,32 @@ int main(int argc, const char* argv[])
     int copyK=K;
     int copyD=D;
 
-    timer.start("kcentersGPU");
+    float *x;
+    //timer.start("kcentersGPU");
 
-    for (;TPB<MaxTPB; TPB=TPB*2) {
+    for (;TPB<=MaxTPB; TPB=TPB*2) {
 
-      int tmp = 10;
+      //int tmp = 10;
       N=copyN;
       for (int n=0; n<MaxN; n=n+1) {
         D=copyD;
-        for (int d=0; d<MaxD; d=d+1) {
-          D=copyD-d*10;
+        for (int di=0; di<MaxD; di=di+1) {
+          D=copyD-di*10*2;
           K=copyK;
-          for (int k=0; k<MaxK; k=k+1) {
-            K=copyK-k*10;
+          for (int ki=0; ki<MaxK; ki=ki+1) {
+            K=copyK-ki*10;
+
+    cout << "Fent punts per N, K i D: " << N << " " << K << " " << D << endl;
+    x = data->makeData(N,K,D);
     
+    cout << "N,K,D: " << N << "," << K << "," << D << endl;
+    FLOAT_TYPE* dist = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * (N+1024)); // cluster means
+    for (int i = 0; i < N+1024; i++) dist[i] = FLT_MAX;
+    int* centroids = (int*) malloc(sizeof(int) * K);  // centroid indices
+    memset(centroids, 0, sizeof(int) * K);
+    int* assign = (int*) malloc(sizeof(int) * (N+1024));     // assignments
+    memset(assign, seed, sizeof(int) * (N+1024));
+    cout << "Punts fets";
     //time_ini = clock();
 
     for (int i = 0; i < N; i++) dist[i] = FLT_MAX;
@@ -142,16 +158,24 @@ int main(int argc, const char* argv[])
     memset(assign, seed, sizeof(int) * N);
 
             // do clustering on GPU 
-            //cout << "kcentersGPU: BEGIN (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
-            //timer.reset("kcentersGPU");
+            cout << "kcentersGPU: BEGIN (N, K, D, TPB) " << N << " " << K << " " << D << " " << TPB << endl;
+            timer.reset("kcentersGPU");
+	    timer.start("kcentersGPU");
             kcentersGPU(TPB, N, K, D, x, assign, dist, centroids, seed, data);
+	    timer.stop("kcentersGPU");
 
             //timer.report();
-            //cout << "kcentersGPU: END (N, D, K, TPB) " << N << " " << D << " " << K << " " << TPB << endl;
-
+            cout << "kcentersGPU: END (N, K, D, TPB) " << N << " " << K << " " << D << " " << TPB << endl;
+    	    timer.report("kcentersGPU"); 
+    // free memory
+    free(x);
+    free(dist);
+    free(centroids);
+    free(assign);
           } /* K */
         } /* D */
-        N=N/tmp;
+        //N=N/tmp;
+	N /= 10;
       } /* N */
     } /* TPB */
 
@@ -159,7 +183,7 @@ int main(int argc, const char* argv[])
 
     //double secs = (double)(time_end - time_ini) / CLOCKS_PER_SEC;
     //printf("%.16g milisegundos\n", secs * 1000.0);
-    timer.stop("kcentersGPU");
+    //timer.stop("kcentersGPU");
     N=copyN; K=copyK; D=copyD;
     
 
@@ -192,13 +216,8 @@ int main(int argc, const char* argv[])
     free(ctr); ctr = NULL;
    // if (data->doPrintTime()) timer.report(); 
    // if (defaults->getTimerOutput() == true) timer.report();*/
-   timer.report("kcentersGPU");
+   //timer.report("kcentersGPU");
     
-    // free memory
-    free(x);
-    free(dist);
-    free(centroids);
-    free(assign);
     
     // done
     cout << "Done clustering" << endl;

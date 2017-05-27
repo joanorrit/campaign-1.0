@@ -44,8 +44,8 @@
 
 #include "./kmeansGPU.h"
 
-//#define SHARED_MEM 1
-#define INTERCALATED_DATA 1
+#define SHARED_MEM 1
+//#define INTERCALATED_DATA 1
 
 #ifdef SHARED_MEM
 #define MEMBARRIER() __syncthreads()
@@ -178,12 +178,18 @@ __global__ static void assignToClusters_KMCUDA(int TPB, int N, int K, int D, FLO
                     // broadcast centroid position and compute distance to data
                     // point along dimension; reading of X is coalesced
 #ifdef SHARED_MEM
-                    //dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + t));
+	#ifdef INTERCALATED_DATA
                     dist += distanceComponentGPU(s_center + (d - offsetD), X + t*D + d);
+	#else
+                    dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + t));
+	#endif
 
 #else
-                    //dist += distanceComponentGPU(s_center + (k*D + d), X + (d * N + t));
-                    dist += distanceComponentGPU(s_center + (k*D + d), X + t*D +d);
+	#ifdef INTERCALATED_DATA
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + t*D + d);
+	#else
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + (d * N + t));
+	#endif
 #endif
 
                 }
@@ -246,11 +252,17 @@ __global__ static void calcScore_CUDA(int TPB, int N, int D, FLOAT_TYPE *X, FLOA
                     //dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + offsetN));
                     //dist += distanceComponentGPU(s_center + (d - offsetD), X + (offsetN) * D + d);
 #ifdef SHARED_MEM
-                    //dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + offsetN));
+	#ifdef INTERCALATED_DATA
                     dist += distanceComponentGPU(s_center + (d - offsetD), X + (offsetN) * D + d);
+	#else
+                    dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + offsetN));
+	#endif
 #else
-                    //dist += distanceComponentGPU(s_center + (k*D + d), X + (d * N + offsetN));
-                    dist += distanceComponentGPU(s_center + (k*D + d), X + offsetN*D +d);
+	#ifdef INTERCALATED_DATA
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + offsetN*D + d);
+	#else
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + (d * N + offsetN));
+	#endif
 #endif
 
                 }
@@ -345,6 +357,13 @@ FLOAT_TYPE kmeansGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ct
     int sMemScore   = (sizeof(FLOAT_TYPE) * 2 * THREADSPERBLOCK);
     int sMemCenters = (sizeof(FLOAT_TYPE) *     THREADSPERBLOCK + sizeof(int) * THREADSPERBLOCK);*/
     // CUDA kernel parameters
+Timing timer;
+timer.init("Centroids Kernel");
+timer.init("AssignToClusters Kernel");
+timer.init("Score Kernel");
+timer.init("Allocate Memory");
+timer.init("CopyMem DeviceToHost");
+
     dim3 block(TPB);
     dim3 gridK(K);
     int  NB =  ( int ) ceil((FLOAT_TYPE) N / (FLOAT_TYPE) TPB);
@@ -354,6 +373,7 @@ FLOAT_TYPE kmeansGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ct
     int sMemCenters = (sizeof(FLOAT_TYPE) *     TPB + sizeof(int) * TPB);
     
     // GPU memory pointers, allocate and initialize device memory
+    timer.start("Allocate Memory");
     FLOAT_TYPE *x_d         = data->allocDeviceMemory<FLOAT_TYPE*>      (sizeof(FLOAT_TYPE) * N * D, x);
     FLOAT_TYPE *ctr_d       = data->allocDeviceMemory<FLOAT_TYPE*>      (sizeof(FLOAT_TYPE) * K * D, ctr);
     int *assign_d      = data->allocDeviceMemory<int*>        (sizeof(int) * N);
@@ -362,7 +382,7 @@ FLOAT_TYPE kmeansGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ct
     FLOAT_TYPE *tmp_d         = data->allocZeroedDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) *TPB*K*2);
     FLOAT_TYPE *coord_d         = data->allocZeroedDeviceMemory<FLOAT_TYPE*>(sizeof(FLOAT_TYPE) *NB*D);
     int *count_d         = data->allocZeroedDeviceMemory<int*>(sizeof(int) *K);
-
+    timer.stop("Allocate Memory");
     // Initialize host memory
     FLOAT_TYPE *s   = (FLOAT_TYPE*) malloc(sizeof(FLOAT_TYPE) * K);
     
@@ -379,17 +399,23 @@ FLOAT_TYPE kmeansGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ct
         // skip at first iteration and use provided centroids instead
         if (iter > 0)
         {
+            timer.start("Centroids Kernel");
             calcCentroids_CUDA<<<gridK, block, sMemCenters>>>(TPB, N, D, x_d, ctr_d, assign_d, tmp_d, (int*)(tmp_d + TPB*K));
+            timer.stop("Centroids Kernel");
             CUT_CHECK_ERROR("calcCentroids_CUDA() kernel execution failed");
         }
         iter++;
         
         // update clusters and create backup of current cluster centers
+        timer.start("AssignToClusters Kernel");
         assignToClusters_KMCUDA<<<gridN, block, sMemAssign>>>(TPB, N, K, D, x_d, ctr_d, assign_d);
+        timer.stop("AssignToClusters Kernel");
         CUT_CHECK_ERROR("assignToClusters_KMCUDA() kernel execution failed");
         
         // get score per cluster for unsorted data
+        timer.start("Score Kernel");
         calcScore_CUDA<<<gridK, block, sMemScore>>>(TPB, N, D, x_d, ctr_d, assign_d, s_d, tmp_d);
+        timer.stop("Score Kernel");
         CUT_CHECK_ERROR("calcScore_CUDA() kernel execution failed");
         
         // copy scores per cluster back to the host and do reduction on CPU
@@ -398,12 +424,19 @@ FLOAT_TYPE kmeansGPU(int TPB, int N, int K, int D, FLOAT_TYPE *x, FLOAT_TYPE *ct
         for (int i = 0; i < K; i++) score += s[i];
     }
     cout << "Number of iterations: " << iter << endl;
-    
+    timer.start("CopyMem DeviceToHost");
     // copy centroids back to host
     cudaMemcpy(ctr, ctr_d,         sizeof(FLOAT_TYPE) * K * D, cudaMemcpyDeviceToHost);
     // copy assignments back to host
-    cudaMemcpy(assign, assign_d,    sizeof(int)   * N    , cudaMemcpyDeviceToHost);
-    
+    cudaMemcpy(assign, assign_d,    sizeof(int)   * N    , cudaMemcpyDeviceToHost); 
+    timer.stop("CopyMem DeviceToHost");
+
+    timer.report("Centroids Kernel");
+    timer.report("AssignToClusters Kernel");
+    timer.report("Score Kernel");
+    timer.report("Allocate Memory");
+    timer.report("CopyMem DeviceToHost");
+    cout << endl;
     // free memory
     cudaFree(x_d);
     cudaFree(ctr_d);
