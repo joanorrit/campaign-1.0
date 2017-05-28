@@ -52,7 +52,7 @@
 #include "defaults.h"
 #include "Generator.h"
 
-//#define INTERCALATED_DATA 1
+#define INTERCALATED_DATA 1
 #define SHARED_MEM 1
 
 using namespace std;
@@ -405,7 +405,6 @@ float* DataIO::makeData(int n, int k, int d)
     generator.generateClusters(); 
 
     generator.generateClustersContiguous();
-cout << "HOLA" << endl;
     //generator.printPoints();
 #ifdef INERCALATED_DATA
     return generator.getIntercalatePoints();

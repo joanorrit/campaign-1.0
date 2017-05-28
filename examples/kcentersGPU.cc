@@ -52,7 +52,7 @@
 #include <time.h>
 
 #define SHARED_MEM 1
-//#define INTERCALATED_DATA 1
+#define INTERCALATED_DATA 1
 
 #include <iostream>
 using namespace std;
