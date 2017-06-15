@@ -49,7 +49,7 @@
 #endif
 
 #define SHARED_MEM 1
-//#define INTERCALATED_DATA 1
+#define INTERCALATED_DATA 1
 using namespace std;
 
 
