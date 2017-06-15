@@ -106,7 +106,7 @@ void calcCentroids(int N, int K, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASS
     for (unsigned int n = 0; n < N; n++)
     {
         // read assignment
-        unsigned int k = ASSIGN[n];
+        unsigned int k = ASSIGN[n]; // --> We take the cluster where n was assign.
         // only resets centroid if data is assigned to it
         // this avoids centering all empty clusters at origin
         if (numElements[k] == 0)

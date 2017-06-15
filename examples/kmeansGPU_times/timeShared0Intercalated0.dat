@@ -4,13 +4,12 @@ K at dataio:100
 D at dataio:200
 kmeansGPU: BEGIN GPU (N, K, D, TPB) 1000000 100 200 512
 Number of iterations: 10
-Centroids Kernel = 3268.32 ms
-AssignToClusters Kernel = 3030.62 ms
-Score Kernel = 338.409 ms
-Allocate Memory = 115.482 ms
-CopyMem DeviceToHost = 0.67472 ms
+Centroids Kernel = 3310.86 ms
+AssignToClusters Kernel = 3035.98 ms
+Score Kernel = 325.762 ms
+Allocate Memory = 118.374 ms
+CopyMem DeviceToHost = 0.687232 ms
 
 kmeansGPU: END GPU (N, K, D, TPB) 1000000 100 200 512
-kmeansGPU = 6754.83 ms
-
+kmeansGPU = 6792.96 ms
 Done clustering

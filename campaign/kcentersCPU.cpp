@@ -54,7 +54,7 @@ void kcentersCPU(int N, int K, int D, FLOAT_TYPE *x, int *assign, FLOAT_TYPE *di
         FLOAT_TYPE maxDist = -1;
         unsigned int newCtr = 0;
         // store index of current centroid
-        centroids[k] = centroid;
+        centroids[k] = centroid; // --> most farest point of the last centroid analized.
         // for each data point
         for (unsigned int n = 0; n < N; n++)
         {

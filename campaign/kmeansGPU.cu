@@ -45,7 +45,7 @@
 #include "./kmeansGPU.h"
 
 #define SHARED_MEM 1
-#define INTERCALATED_DATA 1
+//#define INTERCALATED_DATA 1
 
 #ifdef SHARED_MEM
 #define MEMBARRIER() __syncthreads()
@@ -140,7 +140,7 @@ __device__ static void reduceTwo(int BLOCKSIZE, int tid, T *s_A, U *s_B)
 }
 
 
-__global__ static void assignToClusters_KMCUDA(int TPB, int N, int K, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN)
+/*__global__ static void assignToClusters_KMCUDA(int TPB, int N, int K, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN)
 {
 #ifdef SHARED_MEM
     extern __shared__ FLOAT_TYPE array[];                        // shared memory
@@ -195,6 +195,72 @@ __global__ static void assignToClusters_KMCUDA(int TPB, int N, int K, int D, FLO
                 }
                 offsetD += blockDim.x;
                 MEMBARRIER();//__syncthreads();
+            }
+            dist = distanceFinalizeGPU<FLOAT_TYPE>(1, &dist);
+            // if distance to centroid smaller than previous best, reassign
+            if (dist < minDist || k == 0)
+            {
+                minDist = dist;
+                minIndex = k;
+            }
+        }
+        // now write index of closest centroid to global mem (coalesced)
+        ASSIGN[t] = minIndex;
+    }
+}*/
+__global__ static void assignToClusters_KMCUDA(int TPB, int N, int K, int D, FLOAT_TYPE *X, FLOAT_TYPE *CTR, int *ASSIGN)
+{
+#ifdef SHARED_MEM
+    extern __shared__ FLOAT_TYPE array[];                        // shared memory
+    FLOAT_TYPE *s_center = (FLOAT_TYPE*) array;                       // tpb centroid components
+#else
+    extern __shared__ FLOAT_TYPE array[];                        // shared memory
+    FLOAT_TYPE *s_center = CTR;
+#endif
+    unsigned int t = blockDim.x * blockIdx.x + threadIdx.x; // global thread ID
+    unsigned int tid = threadIdx.x;                         // thread ID in block
+    
+//if (t==0) for (int k=0;k<K;k++) printf("assign k %i %f\n",k,CTR[k]);
+    // for each element
+    if (t < N)
+    {
+        FLOAT_TYPE minDist  = 0.0;
+        int   minIndex = 0;
+        // for each centroid
+        for (unsigned int k = 0; k < K; k++)
+        {
+            // compute distance
+            FLOAT_TYPE dist = 0.0;
+            unsigned int offsetD = 0;
+            // loop over all dimensions in segments of size tpb
+            while (offsetD < D)
+            {
+                // read up to tpb dimensions of centroid K (coalesced)
+#ifdef SHARED_MEM
+                if (offsetD + tid < D) s_center[tid] = CTR[k * D + offsetD + tid];
+                MEMBARRIER();
+#endif
+                // for each of the following tpb (or D - offsetD) dimensions
+                for (unsigned int d = offsetD; d < min(offsetD + blockDim.x, D); d++)
+                {
+                    // broadcast centroid position and compute distance to data
+                    // point along dimension; reading of X is coalesced
+#ifdef SHARED_MEM
+	#ifdef INTERCALATED_DATA
+                    dist += distanceComponentGPU(s_center + (d - offsetD), X + t*D + d); //this is slower.
+	#else
+                    dist += distanceComponentGPU(s_center + (d - offsetD), X + (d * N + t));
+	#endif
+#else
+	#ifdef INTERCALATED_DATA
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + t*D + d); //this is faster.
+	#else
+                    dist += distanceComponentGPU(s_center + (k*D + d), X + (d * N + t));
+	#endif
+#endif
+                }
+                offsetD += blockDim.x;
+                MEMBARRIER();
             }
             dist = distanceFinalizeGPU<FLOAT_TYPE>(1, &dist);
             // if distance to centroid smaller than previous best, reassign
@@ -313,9 +379,12 @@ __global__ static void calcCentroids_CUDA(int TPB, int N, int D, FLOAT_TYPE *X, 
             if (ASSIGN[offset] == k)
             {
                 // update centroid parts
-                //s_centerParts[tid] += X[d * N + offset];
-                s_centerParts[tid] += X[offset*D + d];
 
+#ifdef INTERCALATED_MEM
+                s_centerParts[tid] += X[offset*D + d];
+#else
+                s_centerParts[tid] += X[d * N + offset];
+#endif
                 // increment number of elements in cluster
                 if (d == 0) s_numElements[tid]++;
             }

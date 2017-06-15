@@ -103,6 +103,7 @@ void Generator::generateClusters()
 	for (int numCluster = 0; numCluster < this->K; numCluster++) {
 		for (int actualPointOfCluster = 0; actualPointOfCluster < this->totalPointsPerCluster; actualPointOfCluster++) {
 			for (int dimensions = 0; dimensions < this->D; dimensions++) {
+
 				int memory = (numCluster * this->totalPointsPerCluster + actualPointOfCluster) * this->D + dimensions;
 
 				actualPointOfCluster % 2 == 0 ? 
