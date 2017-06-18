@@ -122,7 +122,7 @@ int main(int argc, const char* argv[])
 #endif
 
 #if 1
-    int MaxTPB = 2048;
+    int MaxTPB = 1024;
     int TPB = 64;
 #else
     int MaxTPB = 1024;

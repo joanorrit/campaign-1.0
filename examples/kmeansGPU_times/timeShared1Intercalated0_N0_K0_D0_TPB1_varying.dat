@@ -4,82 +4,68 @@ K at dataio:100
 D at dataio:200
 kmeansGPU: BEGIN GPU (N, K, D, TPB) 1000000 100 200 64
 Number of iterations: 10
-Centroids Kernel = 13056.7 ms
-AssignToClusters Kernel = 3344.89 ms
-Score Kernel = 1671.82 ms
-Allocate Memory = 120.76 ms
-CopyMem DeviceToHost = 0.686912 ms
+Centroids Kernel = 13071.3 ms
+AssignToClusters Kernel = 3345.13 ms
+Score Kernel = 1672.08 ms
+Allocate Memory = 121.002 ms
+CopyMem DeviceToHost = 0.723168 ms
 
 kmeansGPU: END GPU (N, K, D, TPB) 1000000 100 200 64
-kmeansGPU = 18196.3 ms
+kmeansGPU = 18211.7 ms
 Fent punts per N, K i D: 1000000 100 200
 N at dataio:1000000
 K at dataio:100
 D at dataio:200
 kmeansGPU: BEGIN GPU (N, K, D, TPB) 1000000 100 200 128
 Number of iterations: 10
-Centroids Kernel = 6792 ms
-AssignToClusters Kernel = 3094.84 ms
-Score Kernel = 776.199 ms
-Allocate Memory = 116.863 ms
-CopyMem DeviceToHost = 0.636128 ms
+Centroids Kernel = 6824.46 ms
+AssignToClusters Kernel = 3081.23 ms
+Score Kernel = 776.704 ms
+Allocate Memory = 118.06 ms
+CopyMem DeviceToHost = 0.686592 ms
 
 kmeansGPU: END GPU (N, K, D, TPB) 1000000 100 200 128
-kmeansGPU = 10781.7 ms
+kmeansGPU = 10802.4 ms
 Fent punts per N, K i D: 1000000 100 200
 N at dataio:1000000
 K at dataio:100
 D at dataio:200
 kmeansGPU: BEGIN GPU (N, K, D, TPB) 1000000 100 200 256
 Number of iterations: 10
-Centroids Kernel = 3570.35 ms
-AssignToClusters Kernel = 2864.98 ms
-Score Kernel = 407.785 ms
-Allocate Memory = 116.482 ms
-CopyMem DeviceToHost = 0.636128 ms
+Centroids Kernel = 3578.81 ms
+AssignToClusters Kernel = 2865.82 ms
+Score Kernel = 409.85 ms
+Allocate Memory = 117.433 ms
+CopyMem DeviceToHost = 0.68464 ms
 
 kmeansGPU: END GPU (N, K, D, TPB) 1000000 100 200 256
-kmeansGPU = 6961.36 ms
+kmeansGPU = 6973.75 ms
 Fent punts per N, K i D: 1000000 100 200
 N at dataio:1000000
 K at dataio:100
 D at dataio:200
 kmeansGPU: BEGIN GPU (N, K, D, TPB) 1000000 100 200 512
 Number of iterations: 10
-Centroids Kernel = 2936.36 ms
-AssignToClusters Kernel = 2862.34 ms
-Score Kernel = 203.862 ms
-Allocate Memory = 116.474 ms
-CopyMem DeviceToHost = 0.716512 ms
+Centroids Kernel = 3277.91 ms
+AssignToClusters Kernel = 2867.97 ms
+Score Kernel = 222.073 ms
+Allocate Memory = 118.729 ms
+CopyMem DeviceToHost = 0.689152 ms
 
 kmeansGPU: END GPU (N, K, D, TPB) 1000000 100 200 512
-kmeansGPU = 6120.85 ms
+kmeansGPU = 6488.49 ms
 Fent punts per N, K i D: 1000000 100 200
 N at dataio:1000000
 K at dataio:100
 D at dataio:200
 kmeansGPU: BEGIN GPU (N, K, D, TPB) 1000000 100 200 1024
 Number of iterations: 10
-Centroids Kernel = 2222.31 ms
-AssignToClusters Kernel = 2855.16 ms
-Score Kernel = 156.702 ms
-Allocate Memory = 116.429 ms
-CopyMem DeviceToHost = 0.661152 ms
+Centroids Kernel = 2404.99 ms
+AssignToClusters Kernel = 2859.58 ms
+Score Kernel = 166.844 ms
+Allocate Memory = 117.936 ms
+CopyMem DeviceToHost = 0.68912 ms
 
 kmeansGPU: END GPU (N, K, D, TPB) 1000000 100 200 1024
-kmeansGPU = 5352.7 ms
-Fent punts per N, K i D: 1000000 100 200
-N at dataio:1000000
-K at dataio:100
-D at dataio:200
-kmeansGPU: BEGIN GPU (N, K, D, TPB) 1000000 100 200 2048
-Number of iterations: 10
-Centroids Kernel = 0.01856 ms
-AssignToClusters Kernel = 0.026112 ms
-Score Kernel = 0.022848 ms
-Allocate Memory = 116.439 ms
-CopyMem DeviceToHost = 0.616512 ms
-
-kmeansGPU: END GPU (N, K, D, TPB) 1000000 100 200 2048
-kmeansGPU = 118.015 ms
+kmeansGPU = 5551.16 ms
 Done clustering
